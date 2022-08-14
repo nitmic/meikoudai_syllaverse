@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -92,10 +89,9 @@ namespace PhpToXml
         }
 
         /// <summary>
-        /// phpファイル名の配列をロード
+        /// 
         /// </summary>
-        /// <param name="callback">結果を返すためのコールバック</param>
-        /// <returns></returns>
+        /// <returns>phpリスト</returns>
         string[] LoadPhpList()
         {
             string url = Program.streamingAssetsPath + "/download/";

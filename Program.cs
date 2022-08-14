@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace PhpToXml
+﻿namespace PhpToXml
 {
     public class Program
     {
@@ -12,9 +10,9 @@ namespace PhpToXml
 
             if (Directory.Exists(streamingAssetsPath))
             {
-                TimeTableCreater creater = new TimeTableCreater();
-                creater.CreateTimeTable();
-                creater.Export();
+                TimeTableCreater creator = new TimeTableCreater();
+                creator.CreateTimeTable();
+                creator.Export();
             }
         }
 

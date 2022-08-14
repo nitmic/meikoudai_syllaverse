@@ -13,7 +13,7 @@ namespace PhpToXml
         /// <summary>
         /// 科目名前
         /// </summary>
-        [DataMember] public string name { get; set; }
+        [DataMember] public string name { get; set; } = "";
         /// <summary>
         /// 時間割番号
         /// </summary>
@@ -21,11 +21,11 @@ namespace PhpToXml
         /// <summary>
         /// 担当教員
         /// </summary>
-        [DataMember] public string teacher { get; set; }
+        [DataMember] public string teacher { get; set; } = "";
         /// <summary>
         /// 対象学科
         /// </summary>
-        [DataMember] public string[] department { get; set; }
+        [DataMember] public string[] department { get; set; } = new string[0];
         /// <summary>
         /// 学年
         /// </summary>
