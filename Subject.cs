@@ -3,7 +3,7 @@ using System.Runtime.Serialization;
 
 namespace PhpToXml
 {
-    [DataContract]
+    [DataContract(Namespace ="http://schemas.datacontract.org/2004/07/Suggest")]
     public class Subject
     {
         /// <summary>
