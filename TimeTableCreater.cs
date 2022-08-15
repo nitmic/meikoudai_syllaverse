@@ -29,8 +29,8 @@ namespace PhpToXml
             // 時間割のマッチ
             public const int TERM = 1;
             public const int DAY = 2;
-            public const int START_TIME = 5;
-            public const int END_TIME = 6;
+            public const int START_TIME = 4;
+            public const int END_TIME = 5;
         }
 
         public TimeTableCreater()
