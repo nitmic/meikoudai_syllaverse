@@ -186,7 +186,7 @@ namespace PhpToXml
         {
             string timeTablePosition = matchCollection[MatchIndex.TIMETABLE].Groups[MatchIndex.DIV_CONTENT].Value.Replace("&nbsp;", "");
 
-            Regex r = new Regex(@"(\S+) (.曜|集中)((\d)-(\d)限)?");
+            Regex r = new Regex(@"(\S+) (.曜|集中)((\d+)-(\d+)限)?");
             Match match = r.Match(timeTablePosition);
 
             // 前期後期

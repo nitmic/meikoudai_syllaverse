@@ -54,6 +54,7 @@ namespace PhpToXml
             log.Append("timeTableId:").Append(this.timeTableId).Append("\n");
             log.Append("id:").Append(this.id).Append("\n");
             log.Append("department:[").Append(string.Join(", ", this.department)).Append("]\n");
+            log.Append($"timeTable:{this.half},{this.day},{this.startTime}-{this.endTime}\n");
 
             return log.ToString();
         }
