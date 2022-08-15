@@ -115,7 +115,7 @@ namespace PhpToXml
                 //Console.WriteLine(f);
 
                 string filepath = Program.streamingAssetsPath + "/download/" + f;
-                Console.WriteLine(filepath);
+                //Console.WriteLine(filepath);
 
                 string fileContent;
                 fileContent = LoadPhpFile(filepath);
@@ -127,7 +127,7 @@ namespace PhpToXml
                 );
                 //TextBox1.Text内で正規表現と一致する対象をすべて検索
                 MatchCollection mc = r.Matches(fileContent);
-                Console.WriteLine($"( {mc.Count} )");
+                //Console.WriteLine($"( {mc.Count} )");
 
                 // 科目のデータを抽出
                 Subject subject = ExtractSubject(f, mc);
@@ -167,8 +167,15 @@ namespace PhpToXml
             Regex r = new Regex(@"(.+?)(\d)年次");
             Match match = r.Match(departmentGrade);
             subject.department = match.Groups[1].Value.Replace("<br>", "").Split("<BR> ");
-            Console.WriteLine(match.Groups.Count);
-            Console.WriteLine(string.Join(", ", match.Groups));
+            // log
+            StringBuilder log = new StringBuilder("match.Group = [");
+            for (int i = 0; i < match.Groups.Count; i++)
+            {
+                log.Append("'").Append(match.Groups[i].Value).Append("', ");
+            }
+            log.Append("]");
+            Console.WriteLine(log.ToString());
+            
             subject.grade = int.Parse(match.Groups[2].Value);
             // 単位数を抽出
             subject.creditsNumber = int.Parse(matchCollection[MatchIndex.CREDITS_NUMBER].Groups[MatchIndex.DIV_CONTENT].Value);
@@ -189,17 +196,19 @@ namespace PhpToXml
             Regex r = new Regex(@"(\S+) (.曜|集中)((\d+)-(\d+)限)?");
             Match match = r.Match(timeTablePosition);
 
+            bool logFlag = false;
+
             // 前期後期
             int half = Term.ToTerm(match.Groups[MatchIndex.TERM].Value);
             if (half == Term.Other)
             {
-                Console.WriteLine($"{match.Value}[1] = {match.Groups[MatchIndex.TERM].Value}");
+                logFlag = true;
             }
             // 曜日
             int day = Day.ToDay(match.Groups[MatchIndex.DAY].Value);
             if (day == Day.Other)
             {
-                Console.WriteLine($"{match.Value}[2] = {match.Groups[MatchIndex.DAY].Value}");
+                logFlag = true;
             }
             // 時間
             int startTime, endTime;
@@ -212,7 +221,19 @@ namespace PhpToXml
             {
                 startTime = TimeTable.TIME_OTHER;
                 endTime = TimeTable.TIME_OTHER;
-                Console.WriteLine($"{match.Groups[MatchIndex.START_TIME].Value}-{match.Groups[MatchIndex.END_TIME].Value}");
+                logFlag = true;
+            }
+
+            // エラーログ
+            if(logFlag)
+            {
+                StringBuilder log = new StringBuilder("match.Groups = [");
+                for (int i = 0; i < match.Groups.Count; i++)
+                {
+                    log.Append("'").Append(match.Groups[i]).Append("', ");
+                }
+                log.Append("]");
+                Console.WriteLine(log.ToString());
             }
 
             return (half, day, (startTime, endTime));

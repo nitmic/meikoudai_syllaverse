@@ -32,16 +32,16 @@ namespace PhpToXml
                 case "後期":
                     half = Term.Late;
                     break;
-                case " 第１クォーター":
+                case "第１クォーター":
                     half = Term.Quarter1;
                     break;
-                case " 第２クォーター":
+                case "第２クォーター":
                     half = Term.Quarter2;
                     break;
-                case " 第３クォーター":
+                case "第３クォーター":
                     half = Term.Quarter3;
                     break;
-                case " 第４クォーター":
+                case "第４クォーター":
                     half = Term.Quarter4;
                     break;
                 default:

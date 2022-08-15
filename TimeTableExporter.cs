@@ -8,7 +8,7 @@ namespace PhpToXml
         public static void Export<T>(T data, string filePath)
         {
             string? directoryPath = Path.GetDirectoryName(filePath);
-            if (Directory.Exists(directoryPath))
+            if (directoryPath is not null && !Directory.Exists(directoryPath))
             {
                 Directory.CreateDirectory(directoryPath);
             }

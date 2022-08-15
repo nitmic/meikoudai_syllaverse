@@ -32,7 +32,6 @@ namespace PhpToXml
                     day = Day.Friday;
                     break;
                 default:
-                    Console.WriteLine($"{s}");
                     day = Day.Other;
                     break;
             }
