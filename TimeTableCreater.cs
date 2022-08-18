@@ -133,7 +133,7 @@ namespace PhpToXml
                 Subject subject = ExtractSubject(f, mc);
                 Subjects.Add(subject.id, subject);
 
-                for (int i = subject.startTime - 1; i < subject.endTime; i++)
+                for (int i = subject.startTime; i <= subject.endTime; i++)
                 {
                     timeTable[subject.half][subject.day][i].Add(subject.id);
                 }
