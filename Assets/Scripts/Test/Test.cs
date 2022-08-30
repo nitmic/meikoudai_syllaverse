@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using Suggest;
 
+using TMPro;
+
 public class Test : MonoBehaviour
 {
     public GameObject prefab;
@@ -10,6 +12,7 @@ public class Test : MonoBehaviour
     Dictionary<int, Subject> Subjects;
     HalfSubjects[] halfSubjects = new HalfSubjects[8];
 
+    public TextMeshProUGUI debugText;
 
     void Start()
     {
@@ -20,10 +23,15 @@ public class Test : MonoBehaviour
         // XMLをロード
         yield return StartCoroutine(LoadXML());
 
+        debugText.text += "A";
+
         for(int i=0;i<8;i++){
             halfSubjects[i] = new HalfSubjects();
         }
         // 
+
+        debugText.text += "B";
+
         foreach (KeyValuePair<int ,Subject> item in Subjects)
         {
             int index = (item.Value.grade - 1) * 2 + item.Value.half;
@@ -51,6 +59,9 @@ public class Test : MonoBehaviour
             }
             // Debug.Log(item.Key + ":" + item.Value.department[0]);   
         }
+
+        debugText.text += "C";
+
 
         // デバッグ
         for(int i=0;i<8;i++){
