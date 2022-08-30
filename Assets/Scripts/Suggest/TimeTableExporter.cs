@@ -4,6 +4,8 @@ using System.Runtime.Serialization;
 using UnityEngine.Networking;
 using UnityEngine.Events;
 
+using TMPro;
+
 namespace Suggest
 {
     public static class TimeTableExporter
@@ -47,6 +49,35 @@ namespace Suggest
                 result = (T)deserializer.ReadObject(stream);
             }
 
+            callback(result);
+
+            yield break;
+        }
+
+
+        public static IEnumerator DebugImport<T>(string xmlPath, UnityAction<T> callback,TextMeshProUGUI ugui)
+        {
+            ugui.text += "1";
+            T result;
+            ugui.text += "2";
+#if UNITY_EDITOR
+#else       
+            ugui.text += "3";
+            UnityWebRequest request = new UnityWebRequest(xmlPath);
+            ugui.text += "4";
+            request.downloadHandler = new DownloadHandlerFile(xmlPath); 
+            ugui.text += "5";
+            yield return request.SendWebRequest();
+#endif
+            ugui.text += "6";
+            using (FileStream stream = new FileStream(xmlPath, FileMode.Open))
+            {
+                ugui.text += "7";
+                DataContractSerializer deserializer = new DataContractSerializer(typeof(T));
+                ugui.text += "8";
+                result = (T)deserializer.ReadObject(stream);
+            }
+            ugui.text += "9";
             callback(result);
 
             yield break;

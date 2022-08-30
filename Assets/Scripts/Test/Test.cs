@@ -109,9 +109,10 @@ public class Test : MonoBehaviour
     public IEnumerator LoadXML()
     {
         yield return StartCoroutine(
-            TimeTableExporter.Import<Dictionary<int, Subject>>(
+            TimeTableExporter.DebugImport<Dictionary<int, Subject>>(
                 Application.streamingAssetsPath + "/xml/Syllabus.xml",
-                (result) => Subjects = result
+                (result) => Subjects = result,
+                debugText
             )
         );
     }
