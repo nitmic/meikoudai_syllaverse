@@ -1,0 +1,31 @@
+name: generate-xml
+
+on: 
+  workflow_dispatch:
+
+jobs:
+  generate-xml:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          repository: hydriod/PhpToXml # .NET のリポジトリ
+          path: Temp/
+
+      - name: Setup .NET Core SDK
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: '6.0.x'
+      - name: run
+        run: |
+          dotnet build ./Temp/PhpToXml.csproj 
+          dotnet ./Temp/bin/Debug/net6.0/PhpToXml.dll
+      - name: git config
+        run: |
+          git config --global user.name GitHub Action
+          git config --global user.email action@github.com
+      - name: push
+        run: |
+          git add .
+          git commit -m "github actions"
+          git push origin debug 
