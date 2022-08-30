@@ -16,7 +16,11 @@ public class Test : MonoBehaviour
 
     void Start()
     {
-        StartCoroutine(Coroutine());
+        // StartCoroutine(Coroutine());
+        debugText.text += "A";
+        debugText.text += "B";
+        debugText.text += "C";
+
     }
 
     IEnumerator Coroutine()
