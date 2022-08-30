@@ -16,10 +16,10 @@ public class Test : MonoBehaviour
 
     void Start()
     {
-        // StartCoroutine(Coroutine());
-        debugText.text = "A";
-        debugText.text = "B";
-        debugText.text = "C";
+        StartCoroutine(Coroutine());
+        debugText.text += "A";
+        debugText.text += "B";
+        debugText.text += "C";
 
     }
 
