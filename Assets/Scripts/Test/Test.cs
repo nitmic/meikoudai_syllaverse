@@ -10,10 +10,16 @@ public class Test : MonoBehaviour
     Dictionary<int, Subject> Subjects;
     HalfSubjects[] halfSubjects = new HalfSubjects[8];
 
+
     void Start()
     {
+        StartCoroutine(Coroutine());
+    }
+    IEnumerator Coroutine()
+    {
         // XMLをロード
-        StartCoroutine(LoadXML());
+        yield return StartCoroutine(LoadXML());
+
         for(int i=0;i<8;i++){
             halfSubjects[i] = new HalfSubjects();
         }
