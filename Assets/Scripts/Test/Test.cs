@@ -18,10 +18,11 @@ public class Test : MonoBehaviour
     {
         StartCoroutine(Coroutine());
     }
+
     IEnumerator Coroutine()
     {
         // XMLをロード
-        yield return StartCoroutine(LoadXML());
+        // yield return StartCoroutine(LoadXML());
 
         debugText.text += "A";
 
@@ -93,7 +94,7 @@ public class Test : MonoBehaviour
         }
         
 
-
+        yield return null;
     }
 
     void Update()
