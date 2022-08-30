@@ -1,0 +1,37 @@
+<center><span style="background-color:#ffffff;"><a href="https://syllabus.ict.nitech.ac.jp/search.php">検索 に戻る</a></span><p><table border="1" cellspacing="0" bgcolor="white"><tr><td width="100" align="center" bgcolor="lightsteelblue"><div style="margin-top:6px;margin-bottom:3px">授業科目名</div></td><td width="320"><div style="margin-top:6px;margin-bottom:3px">&nbsp;&nbsp;電子材料工学基礎<br>&nbsp;&nbsp; Introduction to Material Engineering for Electronics</div></td><td width="100" align="center" bgcolor="lightsteelblue"><div style="margin-top:7px;margin-bottom:3px">時間割番号</div></td><td width="50" align="center"><div style="margin-top:6px;margin-bottom:3px">1703</div></td></tr><tr><td width="100" align="center" bgcolor="lightsteelblue"><div style="margin-top:6px;margin-bottom:3px">担当教員名</div></td><td><div style="margin-top:6px;margin-bottom:3px">&nbsp;&nbsp;岸　直希</div></td><td width="100" align="center" bgcolor="lightsteelblue"><div style="margin-top:7px;margin-bottom:3px">実務経験<br>反映科目</div></td><td width="50" align="center"><div style="margin-top:6px;margin-bottom:3px">O</div></td></tr><tr><td width="100" align="center" bgcolor="lightsteelblue"><div style="margin-top:6px;margin-bottom:3px">学科・年次</div></td><td colspan="3"><div style="margin-top:6px;margin-bottom:3px">&nbsp;&nbsp;工学部第二部 電気情報工学科 2年次 </div></td></tr><tr><td width="100" align="center" bgcolor="lightsteelblue"><div style="margin-top:6px;margin-bottom:3px">科目区分</div></td><td width="320"><div style="margin-top:6px;margin-bottom:3px">&nbsp;&nbsp;専門教育科目</div></td><td width="100" align="center" bgcolor="lightsteelblue"><div style="margin-top:7px;margin-bottom:3px">単位数</div></td><td width="50" align="center"><div style="margin-top:6px;margin-bottom:3px">1</div></td></tr><tr><td width="100" align="center" bgcolor="lightsteelblue"><div style="margin-top:6px;margin-bottom:3px">時間割</div></td><td align="left"><div style="margin-top:6px;margin-bottom:3px">&nbsp;&nbsp;前期 金曜3-4限</div></td><td width="100" align="center" bgcolor="lightsteelblue"><div style="margin-top:7px;margin-bottom:3px">授業形態</div></td><td width="50" align="center"><div style="margin-top:6px;margin-bottom:3px">講義</div></td></tr><tr><td width="100" align="center" bgcolor="lightsteelblue"><div style="margin-top:7px;margin-bottom:3px">授業実施方法</div></td><td colspan=3 width="450" align="left"><div style="margin-top:6px;margin-bottom:3px">&nbsp;&nbsp&#9745対面&nbsp;&nbsp&#9744オンデマンド&nbsp;&nbsp&#9744同時双方向<br></div></td></tr><tr><td colspan="4" width="580"><div style="margin:10px 3px 3px 3px;padding-top:6px;padding-bottom:3px;padding-left:7px;background-color:lightsteelblue">ディプロマ・ポリシーとの対応</div><div style="margin:10px">&#9745&nbsp1.&nbsp現象の理解・操作のための数理的基礎知識と科学的素養<br>&#9744&nbsp2.&nbsp歴史，文化，社会への理解と技術的観点から考察する能力と技術を新しい生活につなぐ強い使命感，責任感，高い倫理観<br>&#9744&nbsp3.&nbsp国内外の人々と対話をできるコミュニケーション力と論理的思考力<br>&#9745&nbsp4.&nbsp基幹となる専門分野の基盤的な知識・技術と新たな知識・技術を習得する能力<br></div></td></tr><tr><td colspan="4" width="580"><div style="margin:10px 3px 3px 3px;padding-top:6px;padding-bottom:3px;padding-left:7px;background-color:lightsteelblue">授業の目的・達成目標</div><div style="margin:10px"><p><span style="font-size: medium;">目的</span></p>
+<p><span style="font-size: medium;">近代社会を支えるエレクトロニクスに用いる電子材料について，その機能が電子のどのような働きから生じるかを平易に解説する。原子の電子構造と周期表，結合と結晶，導電性，誘電性と絶縁性，半導体の諸物性について学習し，電子材料工学を学ぶための基礎知識を身につける。また，エレクトロニクス産業の発展や製品開発に不可欠な新しい機能性電子材料を探求する好奇心や興味を引き出すことを目的とする。</span></p>
+<p><span style="font-size: medium;"> </span></p>
+<p><span style="font-size: medium;">達成目標</span></p>
+<p><span style="font-size: medium;">1：誘電体の分極と外部の電場との応答性を説明できる</span></p>
+<p><span style="font-size: medium;">2：金属の電気伝導について説明できる</span></p>
+<p><span style="font-size: medium;">3：絶縁材料の有用性について説明できる</span></p>
+<p><span style="font-size: medium;">4：半導体における電気伝導を説明できる</span></p>
+<p><span style="font-size: medium;">5：材料に磁性が発生することを説明できる</span></p>
+<p><span style="font-size: medium;"> </span></p>
+<p><span style="font-size: medium;">学んだ内容を用いる科目： 電気磁気学基礎I、電気数学</span></p>
+<p><span style="font-size: medium;">理解の助けになる科目：電子材料工学、半導体物性、電子デバイス工学</span></p></div><div style="margin:20px 3px 3px 3px;padding-top:6px;padding-bottom:3px;padding-left:7px;background-color:lightsteelblue">授業計画</div><div style="margin:10px"><ol>
+<li><span style="font-size: medium;">ガイダンス、電気電子材料の基礎</span></li>
+<li><span style="font-size: medium;">量子論</span></li>
+<li><span style="font-size: medium;">金属1</span></li>
+<li><span style="font-size: medium;">金属2</span></li>
+<li><span style="font-size: medium;">半導体1</span></li>
+<li><span style="font-size: medium;">半導体2</span></li>
+<li><span style="font-size: medium;">半導体3</span></li>
+<li><span style="font-size: medium;">中間試験</span></li>
+<li><span style="font-size: medium;">半導体4</span></li>
+<li><span style="font-size: medium;">半導体のデバイス応用</span></li>
+<li><span style="font-size: medium;">絶縁体</span></li>
+<li><span style="font-size: medium;">誘電体</span></li>
+<li><span style="font-size: medium;">強誘電体と液晶</span></li>
+<li><span style="font-size: medium;">磁性体</span></li>
+<li><span style="font-size: medium;">期末試験と解説</span></li>
+</ol>
+<p> </p>
+<p><span style="font-size: medium;">豊田合成株式会社に在籍した経験を持つ教員が、エレクトロニクス分野における 業務経験を踏まえて講義を行う。</span></p>
+<p> </p></div><div style="margin:20px 3px 3px 3px;padding-top:6px;padding-bottom:3px;padding-left:7px;background-color:lightsteelblue">成績評価の方法</div><div style="margin:10px"><p><span style="font-size: medium;">中間試験（45点）、期末試験（45点）、課題（10点）を100点満点で評価する。</span></p></div><div style="margin:20px 3px 3px 3px;padding-top:6px;padding-bottom:3px;padding-left:7px;background-color:lightsteelblue">成績評価の基準</div><div style="margin:10px">秀　 達成目標を超えた成果を上げている　100点～90点<br>優　 達成目標に十分達している　　　　　89点～80点<br>良　 達成目標に達している　　　　　　　79点～70点<br>可　 達成目標に概ね達している　　　　　69点～60点<br>不可 達成目標に達していない　　　　　　59点以下<br><p><span style="font-size: medium;">中間試験・・・授業計画1~7の範囲から出題。</span></p>
+<p><span style="font-size: medium;">期末試験・・・授業計画9~14の範囲から出題。</span></p>
+<p><span style="font-size: medium;">課題・・・各回の授業内容から出題。</span></p>
+<p><span style="font-size: medium;">中間試験、期末試験、課題の合計得点が60 点以上を合格とする。</span></p></div><div style="margin:20px 3px 3px 3px;padding-top:6px;padding-bottom:3px;padding-left:7px;background-color:lightsteelblue">事前・事後学修等の指示及び履修にあたっての注意事項</div><div style="margin:10px"><p><span style="font-size: medium;">事前学修：テキスト予習 （120 分）</span></p>
+<p><span style="font-size: medium;">事後学修：授業、課題の復習（120分）</span></p></div><div style="margin:20px 3px 3px 3px;padding-top:6px;padding-bottom:3px;padding-left:7px;background-color:lightsteelblue">教科書</div><div style="margin:10px"><a href="http://opac.lib.nitech.ac.jp/opc/recordID/catalog.bib/BB0823471X" target=_blank>電気電子物性工学　岩本光正著　　数理工学社<a><br></div><div style="margin:20px 3px 3px 3px;padding-top:6px;padding-bottom:3px;padding-left:7px;background-color:lightsteelblue">参考書</div><div style="margin:10px"><a href="http://opac.lib.nitech.ac.jp/opc/recordID/catalog.bib/BN04470588" target=_blank>量子論　小出昭一郎著　裳華房<a><br></div><div style="margin:20px 3px 3px 3px;padding-top:6px;padding-bottom:3px;padding-left:7px;background-color:lightsteelblue">オフィスアワー</div><div style="margin:10px"><p><span style="font-size: medium;">11号館517室。</span></p>
+<p><span style="font-size: medium;">金曜16:00～17:40、及び講義後。</span></p>
+<p><span style="font-size: medium;">E-mail: kishi.naoki@nitech.ac.jp</span></p></div></td></tr></table><p><span style="background-color:#ffffff;"><a href="https://syllabus.ict.nitech.ac.jp/search.php">検索 に戻る</a></span><p></center>
