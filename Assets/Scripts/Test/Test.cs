@@ -26,7 +26,7 @@ public class Test : MonoBehaviour
     IEnumerator Coroutine()
     {
         // XMLをロード
-        yield return StartCoroutine(LoadXML());
+        // yield return StartCoroutine(LoadXML());
 
         debugText.text += "A";
 
