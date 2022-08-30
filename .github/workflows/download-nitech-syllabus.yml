@@ -1,0 +1,27 @@
+name: download nitech syllabus
+
+on:
+  workflow_dispatch:
+
+jobs:
+  download-syllabus:
+    runs-on: ubuntu-latest
+    steps:
+      - name: setup python
+        uses: actions/setup-python@v4
+        with: 
+          python-version: "3.10"
+      - name: requests install
+        run: pip install requests
+      - name: download
+        run: |
+          python download.py
+      - name: git config
+        run: |
+          git config --global user.name GitHub Action
+          git config --global user.email action@github.com
+      - name: push
+        run: |
+          git add .
+          git commit -m "github actions"
+          git push origin main
