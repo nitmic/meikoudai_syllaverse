@@ -28,4 +28,4 @@ jobs:
         run: |
           git add .
           git commit -m "github actions"
-          git push origin debug 
+          git push origin main
