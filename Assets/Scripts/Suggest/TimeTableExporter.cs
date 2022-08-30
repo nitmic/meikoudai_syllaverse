@@ -5,6 +5,7 @@ using UnityEngine.Networking;
 using UnityEngine.Events;
 
 using TMPro;
+using System.Text;
 
 namespace Suggest
 {
@@ -74,10 +75,18 @@ namespace Suggest
             {
                 ugui.text += "7";
                 DataContractSerializer deserializer = new DataContractSerializer(typeof(T));
+                
+                var reader = new StreamReader(stream, Encoding.UTF8);
+
                 ugui.text += "8";
+                // ugui.text += reader.ReadLine();
+
                 result = (T)deserializer.ReadObject(stream);
+                
+                ugui.text += "9";
+                // ugui.text += reader.ReadLine();
             }
-            ugui.text += "9";
+            ugui.text += "0";
             callback(result);
 
             yield break;
