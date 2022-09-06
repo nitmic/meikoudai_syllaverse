@@ -14,7 +14,7 @@ jobs:
       - name: checkout .NET repository
         uses: actions/checkout@v3
         with:
-          repository: hydriod/PhpToXml
+          ref: php-to-xml
           path: Temp/
 
       - name: Setup .NET Core SDK
