@@ -118,7 +118,7 @@ public class Test : MonoBehaviour
             )
         );
         
-        //yield return StartCoroutine(TimeTableExporter.Import());
+        yield return StartCoroutine(TimeTableExporter.Import());
     }
     
 }
