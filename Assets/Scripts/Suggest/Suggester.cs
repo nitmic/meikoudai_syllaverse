@@ -23,7 +23,7 @@ namespace Suggest
         /// <summary>
         /// 全体の時間割
         /// </summary>
-        public List<int>[][][] timeTable;
+        public IReadOnlyList<int>[][][] Timetable { get => TimeTableExporter.Timetable; }
         /// <summary>
         /// 提案(対象)科目
         /// </summary>
@@ -37,12 +37,13 @@ namespace Suggest
         /// <para>シラバスの情報</para>
         /// <para>phpファイルの番号がキー</para>
         /// </summary>
-        private Dictionary<int, Subject> syllabus;
-        public IReadOnlyDictionary<int, Subject> Syllabus { get => syllabus; }
+        public IReadOnlyDictionary<int, Subject> Syllabus { get => TimeTableExporter.Syllabus; }
 
 
         private void Awake()
         {
+            StartCoroutine(TimeTableExporter.Import());
+
             // リスト初期化
             uiDrawTimeTable = new HashSet<Subject>[Day.DAY_MAX];
             suggestTimeTable = new HashSet<Subject>[Day.DAY_MAX];
@@ -51,9 +52,10 @@ namespace Suggest
                 uiDrawTimeTable[day] = new HashSet<Subject>();
                 suggestTimeTable[day] = new HashSet<Subject>();
             }
-
+            
         }
 
+        /*
         private IEnumerator Start()
         {
             //department = departmentDropdown.options[departmentDropdown.value].text;
@@ -64,15 +66,17 @@ namespace Suggest
 
             yield break;
         }
+        */
 
         public void printTimeTable()
         {
             TimeTablePrinter.printSyllabus(Syllabus);
             TimeTablePrinter.printTimeTable(suggestTimeTable, "suggest TimeTable");
             TimeTablePrinter.printTimeTable(uiDrawTimeTable, "uiDrawTimeTable");
-            TimeTablePrinter.printTimeTable(timeTable, "timeTable", Syllabus);
+            TimeTablePrinter.printTimeTable(Timetable, "Timetable", Syllabus);
         }
 
+        /*
         /// <summary>
         /// XMLファイル一式をロードする
         /// </summary>
@@ -89,11 +93,12 @@ namespace Suggest
             yield return StartCoroutine(
                 TimeTableExporter.Import<List<int>[][][]>(
                     Application.streamingAssetsPath + "/xml/TimeTable.xml",
-                    (result) => timeTable = result
+                    (result) => Timetable = result
                 )
             );
             Debug.Log("Load end");
         }
+        */
 
         public void CreateSuggest(int half, string department, int grade)
         {
@@ -110,13 +115,13 @@ namespace Suggest
 
             // 全体の時間割から対象科目の時間割を作成
             // 曜日を全走査
-            for (int day = 0; day < timeTable[half].Length; day++)
+            for (int day = 0; day < Timetable[half].Length; day++)
             {
                 // 時間を全走査
-                for (int j = 0; j < timeTable[half][day].Length; j++)
+                for (int j = 0; j < Timetable[half][day].Length; j++)
                 {
                     // 科目
-                    foreach (int id in timeTable[half][day][j])
+                    foreach (int id in Timetable[half][day][j])
                     {
                         // 学年一致
                         if (Syllabus[id].grade == grade)
@@ -131,10 +136,10 @@ namespace Suggest
                                     suggestTimeTable[day].Add(Syllabus[id]);
 
                                     // 始めのコマが空きコマならUI表示用に追加
-                                    if(is_empty[day, j])
+                                    if (is_empty[day, j])
                                     {
                                         uiDrawTimeTable[day].Add(Syllabus[id]);
-                                        for(int i=Syllabus[id].startTime;i<=Syllabus[id].endTime;i++)
+                                        for (int i = Syllabus[id].startTime; i <= Syllabus[id].endTime; i++)
                                         {
                                             is_empty[day, i] = false;
                                         }

@@ -9,7 +9,7 @@ public class Test : MonoBehaviour
 {
     public GameObject prefab;
 
-    Dictionary<int, Subject> Subjects;
+    IReadOnlyDictionary<int, Subject> Subjects{ get => TimeTableExporter.Syllabus; }
     HalfSubjects[] halfSubjects = new HalfSubjects[8];
 
     public TextMeshProUGUI debugText;
@@ -108,13 +108,17 @@ public class Test : MonoBehaviour
 
     public IEnumerator LoadXML()
     {
+        List<Subject> l;
+        
         yield return StartCoroutine(
-            TimeTableExporter.DebugImport<Dictionary<int, Subject>>(
+            TimeTableExporter.DebugImport<List<Subject>>(
                 Application.streamingAssetsPath + "/xml/Syllabus.xml",
-                (result) => Subjects = result,
+                (result) => l = result,
                 debugText
             )
         );
+        
+        //yield return StartCoroutine(TimeTableExporter.Import());
     }
     
 }
