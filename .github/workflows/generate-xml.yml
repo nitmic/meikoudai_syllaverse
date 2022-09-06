@@ -7,9 +7,14 @@ jobs:
   generate-xml:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      # 自リポジトリ
+      - name: checkout this repository
+        uses: actions/checkout@v3
+      # .NET のリポジトリ
+      - name: checkout .NET repository
+        uses: actions/checkout@v3
         with:
-          repository: hydriod/PhpToXml # .NET のリポジトリ
+          repository: hydriod/PhpToXml
           path: Temp/
 
       - name: Setup .NET Core SDK
