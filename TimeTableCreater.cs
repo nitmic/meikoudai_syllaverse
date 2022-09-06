@@ -7,7 +7,7 @@ namespace PhpToXml
     {
         public List<int>[][][] timeTable;
 
-        public Dictionary<int, Subject> Subjects { get; set; }
+        public List<Subject> Syllabus { get; set; }
 
         static class MatchIndex
         {
@@ -51,7 +51,7 @@ namespace PhpToXml
             }
 
             // 科目辞書の初期化
-            Subjects = new Dictionary<int, Subject>();
+            Syllabus = new List<Subject>();
         }
 
         public void printTimeTable()
@@ -74,7 +74,7 @@ namespace PhpToXml
         public void Export()
         {
             TimeTableExporter.Export(timeTable, Program.streamingAssetsPath + "/xml/TimeTable.xml");
-            TimeTableExporter.Export(Subjects, Program.streamingAssetsPath + "/xml/Syllabus.xml");
+            TimeTableExporter.Export(Syllabus, Program.streamingAssetsPath + "/xml/Syllabus.xml");
         }
 
         public void CreateTimeTable()
@@ -131,7 +131,7 @@ namespace PhpToXml
 
                 // 科目のデータを抽出
                 Subject subject = ExtractSubject(f, mc);
-                Subjects.Add(subject.id, subject);
+                Syllabus.Add(subject);
 
                 for (int i = subject.startTime; i <= subject.endTime; i++)
                 {
@@ -140,6 +140,11 @@ namespace PhpToXml
             }
         }
 
+        /// <summary>
+        /// ファイル名からファイルの中身を読み込み
+        /// </summary>
+        /// <param name="filePath">ファイルパス</param>
+        /// <returns>ファイルの中身</returns>
         string LoadPhpFile(string filePath)
         {
             string fileContent;
