@@ -22,7 +22,7 @@ jobs:
       - name: download
         run: |
           python download.py
-        # 圧縮
+          # 圧縮
           tar -cvf download_syllabus.tar Assets/StreamingAssets/download/
           bzip2 -zv --fast download_syllabus.tar
         # アーティファクトのアップロード
