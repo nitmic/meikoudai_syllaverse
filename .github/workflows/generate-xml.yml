@@ -43,4 +43,4 @@ jobs:
         run: |
           git add .
           git commit -m "github actions"
-          git push origin main
+          git push origin ${{ github.repository }}
