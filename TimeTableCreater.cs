@@ -3,11 +3,11 @@ using System.Text.RegularExpressions;
 
 namespace PhpToXml
 {
-    public class TimeTableCreater
+    public static class TimeTableCreator
     {
-        public List<int>[][][] timeTable;
+        public static List<int>[][][] timeTable;
 
-        public List<Subject> Syllabus { get; set; }
+        public static List<Subject> Syllabus { get; set; }
 
         static class MatchIndex
         {
@@ -33,7 +33,7 @@ namespace PhpToXml
             public const int END_TIME = 5;
         }
 
-        public TimeTableCreater()
+        static TimeTableCreator()
         {
             // リスト初期化
             timeTable = new List<int>[Term.HALF_MAX][][];
@@ -54,7 +54,7 @@ namespace PhpToXml
             Syllabus = new List<Subject>();
         }
 
-        public void printTimeTable()
+        public static void printTimeTable()
         {
             StringBuilder sTableLog = new StringBuilder();
             foreach (List<int>[] row in timeTable[0])
@@ -71,13 +71,13 @@ namespace PhpToXml
             Console.WriteLine(sTableLog.ToString());
         }
 
-        public void Export()
+        public static void Export()
         {
-            TimeTableExporter.Export(timeTable, Program.streamingAssetsPath + "/xml/TimeTable.xml");
-            TimeTableExporter.Export(Syllabus, Program.streamingAssetsPath + "/xml/Syllabus.xml");
+            TimeTableExporter.Export(timeTable, Path.Combine(Program.xmlDirPath, "TimeTable.xml"));
+            TimeTableExporter.Export(Syllabus, Path.Combine(Program.xmlDirPath, "Syllabus.xml"));
         }
 
-        public void CreateTimeTable()
+        public static void CreateTimeTable()
         {
             // phpのリストをロード
             string[] fileNames = LoadPhpList();
@@ -92,11 +92,10 @@ namespace PhpToXml
         /// 
         /// </summary>
         /// <returns>phpリスト</returns>
-        string[] LoadPhpList()
+        static string[] LoadPhpList()
         {
-            string url = Program.streamingAssetsPath + "/download/";
             // Unityエディタ上での処理
-            DirectoryInfo dir = new DirectoryInfo(url);
+            DirectoryInfo dir = new DirectoryInfo(Program.phpDirPath);
             FileInfo[] info = dir.GetFiles("*.php");
             string[] fName = new string[info.Length];
             for (int i = 0; i < info.Length; i++)
@@ -107,14 +106,14 @@ namespace PhpToXml
             return fName;
         }
 
-        void PhpToTimeTable(string[] fileNames)
+        static void PhpToTimeTable(string[] fileNames)
         {
 
             foreach (string f in fileNames)
             {
                 //Console.WriteLine(f);
 
-                string filepath = Program.streamingAssetsPath + "/download/" + f;
+                string filepath = Path.Combine(Program.phpDirPath, f);
                 //Console.WriteLine(filepath);
 
                 string fileContent;
@@ -145,7 +144,7 @@ namespace PhpToXml
         /// </summary>
         /// <param name="filePath">ファイルパス</param>
         /// <returns>ファイルの中身</returns>
-        string LoadPhpFile(string filePath)
+        static string LoadPhpFile(string filePath)
         {
             string fileContent;
             fileContent = File.ReadAllText(filePath);
@@ -159,7 +158,7 @@ namespace PhpToXml
         /// <param name="fileName">phpファイルの名前</param>
         /// <param name="matchCollection">正規表現の結果</param>
         /// <returns>科目インスタンス</returns>
-        Subject ExtractSubject(string fileName, MatchCollection matchCollection)
+        static Subject ExtractSubject(string fileName, MatchCollection matchCollection)
         {
             Subject subject = new Subject();
             subject.id = int.Parse(fileName.Replace(".php", ""));
@@ -194,7 +193,7 @@ namespace PhpToXml
             return subject;
         }
 
-        (int half, int day, (int startTime, int endTime)) ExtractTimeTable(MatchCollection matchCollection)
+        static (int half, int day, (int startTime, int endTime)) ExtractTimeTable(MatchCollection matchCollection)
         {
             string timeTablePosition = matchCollection[MatchIndex.TIMETABLE].Groups[MatchIndex.DIV_CONTENT].Value.Replace("&nbsp;", "");
 

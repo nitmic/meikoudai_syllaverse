@@ -1,18 +1,29 @@
 ﻿namespace PhpToXml
 {
-    public class Program
+    public static class Program
     {
+        public static string phpDirPath = "";
         public const string streamingAssetsPath = "Assets/StreamingAssets";
+        public static string xmlDirPath = Path.Combine(streamingAssetsPath, "xml");
 
         static void Main(string[] args)
         {
             Console.WriteLine($"{Directory.GetCurrentDirectory()}> ");
+            phpDirPath = args[0];
 
-            if (Directory.Exists(streamingAssetsPath))
+            if (!Directory.Exists(xmlDirPath))
             {
-                TimeTableCreater creator = new TimeTableCreater();
-                creator.CreateTimeTable();
-                creator.Export();
+                Directory.CreateDirectory(xmlDirPath);
+            }
+
+            if (Directory.Exists(phpDirPath))
+            {
+                TimeTableCreator.CreateTimeTable();
+                TimeTableCreator.Export();
+            }
+            else
+            {
+                Console.WriteLine($"Not Exist Syllabus'{phpDirPath}'");
             }
         }
 
