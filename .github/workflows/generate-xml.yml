@@ -11,13 +11,15 @@ jobs:
       - name: checkout this repository
         uses: actions/checkout@v3
       # .NET のリポジトリ
+      - run: mkdir -p Temp/php-to-xml
       - name: checkout .NET repository
         uses: actions/checkout@v3
         with:
           ref: php-to-xml_feature-artifact  # テスト用
-          path: Temp/
+          path: Temp/php-to-xml
       # アーティファクトのダウンロード
-      - name: 
+      - run: mkdir -p Temp/artifact
+      - name: Download artifact
         uses: actions/upload-artifact@v3
         with:
           name: download_syllabus.tar.bz2
@@ -32,8 +34,8 @@ jobs:
       # XMLファイルの出力
       - name: run
         run: |
-          dotnet build ./Temp/PhpToXml.csproj 
-          dotnet ./Temp/bin/Debug/net6.0/PhpToXml.dll ./Temp/artifact/download
+          dotnet build ./Temp/php-to-xmlPhpToXml.csproj 
+          dotnet ./Temp/php-to-xmlbin/Debug/net6.0/PhpToXml.dll ./Temp/artifact/download
       # push
       - name: git config
         run: |

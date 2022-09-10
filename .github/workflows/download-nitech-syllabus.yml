@@ -24,7 +24,7 @@ jobs:
           python download.py
           # 圧縮
           tar -cvf download_syllabus.tar Assets/StreamingAssets/download/
-          bzip2 -zv --fast download_syllabus.tar
+          bzip2 -zv --best download_syllabus.tar
         # アーティファクトのアップロード
       - uses: actions/upload-artifact@v3
         with:
