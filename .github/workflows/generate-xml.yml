@@ -7,24 +7,34 @@ jobs:
   generate-xml:
     runs-on: ubuntu-latest
     steps:
-      # 自リポジトリ
+      # 自リポジトリのチェックアウト
       - name: checkout this repository
         uses: actions/checkout@v3
       # .NET のリポジトリ
       - name: checkout .NET repository
         uses: actions/checkout@v3
         with:
-          ref: php-to-xml
+          ref: php-to-xml_feature-artifact  # テスト用
           path: Temp/
-
+      # アーティファクトのダウンロード
+      - name: 
+        uses: actions/upload-artifact@v3
+        with:
+          name: download_syllabus.tar.bz2
+          path: Temp/artifact
+      - run: tar -jxvf download_syllabus.tar.bz2
+        working-directory: Temp/artifact
+      # 環境構築
       - name: Setup .NET Core SDK
         uses: actions/setup-dotnet@v2
         with:
           dotnet-version: '6.0.x'
+      # XMLファイルの出力
       - name: run
         run: |
           dotnet build ./Temp/PhpToXml.csproj 
-          dotnet ./Temp/bin/Debug/net6.0/PhpToXml.dll
+          dotnet ./Temp/bin/Debug/net6.0/PhpToXml.dll ./Temp/artifact/download
+      # push
       - name: git config
         run: |
           git config --global user.name GitHub Action

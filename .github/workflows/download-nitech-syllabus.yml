@@ -7,24 +7,27 @@ jobs:
   download-syllabus:
     runs-on: ubuntu-latest
     steps:
+        # チェックアウト
       - uses: actions/checkout@v3
         with:
           repository: nitmic-git/meikoudai_syllaverse
+        # Python環境の構築
       - name: setup python
         uses: actions/setup-python@v4
         with: 
           python-version: "3.10"
       - name: requests install
         run: pip install requests
+        # シラバスのダウンロード
       - name: download
         run: |
           python download.py
-      - name: git config
-        run: |
-          git config --global user.name GitHub Action
-          git config --global user.email action@github.com
-      - name: push
-        run: |
-          git add .
-          git commit -m "github actions"
-          git push origin main
+        # 圧縮
+        tar -cvf download_syllabus.tar Assets/StreamingAssets/download/
+        bzip2 -zv --fast download_syllabus.tar
+        # アーティファクトのアップロード
+      - uses: actions/upload-artifact@v3
+        with:
+          name: download_syllabus.tar.bz2
+          path: Assets/StreamingAssets/download
+          
