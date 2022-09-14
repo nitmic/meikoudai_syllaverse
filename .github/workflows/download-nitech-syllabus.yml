@@ -32,7 +32,7 @@ jobs:
         run: |
           sudo apt install jq
           AUTH_JSON=$(curl -X POST "https://oauth2.googleapis.com/token" \
-          -d "client_id=${{ secrets.CLIENT_ID }} \
+          -d "client_id=${{ secrets.CLIENT_ID }}" \
           -d "client_secret=${{ secrets.CLIENT_SECRET }}" \
           -d "refresh_token=${{ secrets.REFRESH_TOKEN }}" \
           -d "grant_type=refresh_token")
