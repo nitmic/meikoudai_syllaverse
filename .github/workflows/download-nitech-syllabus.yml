@@ -20,16 +20,12 @@ jobs:
         run: pip install requests
         # シラバスのダウンロード
       - name: download
-        run: |
-          python download.py
-          # 圧縮
+        run: python download.py
+        # 圧縮
+      - run: |
           tar -cvf download_syllabus.tar Assets/StreamingAssets/download/
           bzip2 -zv --best download_syllabus.tar
-        # アーティファクトのアップロード
-      - uses: actions/upload-artifact@v3
-        with:
-          name: download_syllabus.tar.bz2
-          path: download_syllabus.tar.bz2
+          file download_syllabus.tar.bz2
         # ドライブにアップロード
         # アクセストークン取得
       - name: Authorize Drive
@@ -48,5 +44,12 @@ jobs:
           "https://www.googleapis.com/upload/drive/v3/files/1-7RpPdsAdUNTPmB6FuMvIj3nDkVseSrx?uploadType=media" \
           -H "Authorization: Bearer ${TOKEN}" \
           -F "file=@download_syllabus.tar.bz2"
+          file download_syllabus.tar.bz2
+        # アーティファクトのアップロード
+      - uses: actions/upload-artifact@v3
+        with:
+          name: download_syllabus.tar.bz2
+          path: download_syllabus.tar.bz2
+      - run: download_syllabus.tar.bz2
 
           
