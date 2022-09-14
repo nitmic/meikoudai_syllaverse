@@ -20,7 +20,7 @@ jobs:
         run: pip install requests
         # シラバスのダウンロード
       - name: download
-        run: python download.py
+        run: python download.py -d
         # 圧縮
       - run: |
           tar -cvf download_syllabus.tar Assets/StreamingAssets/download/
@@ -50,6 +50,6 @@ jobs:
         with:
           name: download_syllabus.tar.bz2
           path: download_syllabus.tar.bz2
-      - run: download_syllabus.tar.bz2
+      - run: file download_syllabus.tar.bz2
 
           
