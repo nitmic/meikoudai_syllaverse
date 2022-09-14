@@ -35,7 +35,7 @@ jobs:
       #    path: Temp/artifact
       - name: Download
         run: |
-          curl "https://www.googleapis.com/drive/v3/files/1qqZ5pSioqCACDCvMEAmgtjNu4oohG549?alt=media" \
+          curl "https://www.googleapis.com/drive/v3/files/1-7RpPdsAdUNTPmB6FuMvIj3nDkVseSrx?alt=media" \
           -H "Authorization: Bearer ${TOKEN}" \
           -o Temp/artifact/download_syllabus.tar.bz2
       - run: tar -jxvf download_syllabus.tar.bz2
@@ -48,8 +48,8 @@ jobs:
       # XMLファイルの出力
       - name: run
         run: |
-          dotnet build ./Temp/php-to-xmlPhpToXml.csproj 
-          dotnet ./Temp/php-to-xmlbin/Debug/net6.0/PhpToXml.dll ./Temp/artifact/download
+          dotnet build ./Temp/php-to-xml/PhpToXml.csproj 
+          dotnet ./Temp/php-to-xml/bin/Debug/net6.0/PhpToXml.dll ./Temp/artifact/download
       # push
       - name: git config
         run: |
