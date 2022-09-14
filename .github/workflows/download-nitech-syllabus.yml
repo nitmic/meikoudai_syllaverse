@@ -29,5 +29,8 @@ jobs:
       - uses: actions/upload-artifact@v3
         with:
           name: download_syllabus.tar.bz2
-          path: Assets/StreamingAssets/download
+          path: download_syllabus.tar.bz2
+      - name: Upload drive
+        run: python upload_drive.py download_syllabus.tar.bz2 ${{ secrets.CLIENT_ID }} ${{ secrets.CLIENT_SECRET }} ${{ secrets.REFRESH_TOKEN }}
+
           

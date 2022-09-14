@@ -17,13 +17,27 @@ jobs:
         with:
           ref: php-to-xml_feature-artifact  # テスト用
           path: Temp/php-to-xml
+      # アクセストークンの取得
+      - run: |
+          sudo apt install jq
+          AUTH_JSON=$(curl -X POST "https://oauth2.googleapis.com/token" \
+          -d "client_id=${{ secrets.CLIENT_ID }}" \
+          -d "client_secret=${{ secrets.CLIENT_SECRET }}" \
+          -d "refresh_token=${{ secrets.REFRESH_TOKEN }}" \
+          -d "grant_type=refresh_token")
+          TOKEN=$(echo ${AUTH_JSON} | jq .access_token)
       # アーティファクトのダウンロード
       - run: mkdir -p Temp/artifact
-      - name: Download artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: download_syllabus.tar.bz2
-          path: Temp/artifact
+      #- name: Download artifact
+      #  uses: actions/upload-artifact@v3
+      #  with:
+      #    name: download_syllabus.tar.bz2
+      #    path: Temp/artifact
+      - name: Download
+        run: |
+          curl "https://www.googleapis.com/drive/v3/files/1qqZ5pSioqCACDCvMEAmgtjNu4oohG549?alt=media" \
+          -H "Authorization: Bearer ${TOKEN}" \
+          -o Temp/artifact/download_syllabus.tar.bz2
       - run: tar -jxvf download_syllabus.tar.bz2
         working-directory: Temp/artifact
       # 環境構築
