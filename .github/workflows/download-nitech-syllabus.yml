@@ -24,9 +24,8 @@ jobs:
         # 圧縮
       - name: Compress
         run: |
-          tar -cvf download_syllabus.tar Assets/StreamingAssets/download/
-          bzip2 -zv --best download_syllabus.tar
-          file download_syllabus.tar.bz2
+          tar -cvf download_syllabus.tar -C Assets/StreamingAssets/download/ .
+          xz -z9T0ev download_syllabus.tar
         # ドライブにアップロード
       - name: Upload Drive
         run: |
@@ -39,15 +38,14 @@ jobs:
           TOKEN=$(echo ${AUTH_JSON} | jq .access_token)
           # アップロード
           curl -X PATCH \
-          "https://www.googleapis.com/upload/drive/v3/files/1-7RpPdsAdUNTPmB6FuMvIj3nDkVseSrx?uploadType=media" \
+          "https://www.googleapis.com/upload/drive/v3/files/1-7RpPdsAdUNTPmB6FuMvIj3nDkVseSrx?uploadType=multipart" \
           -H "Authorization: Bearer ${TOKEN}" \
-          -F "file=@download_syllabus.tar.bz2"
-          file download_syllabus.tar.bz2
+          -F 'metadata={"name": "download_syllabus.tar.xz"};type=application/json'
+          -F "file=@download_syllabus.tar.xz"
         # アーティファクトのアップロード
       - uses: actions/upload-artifact@v3
         with:
-          name: download_syllabus.tar.bz2
-          path: download_syllabus.tar.bz2
-      - run: file download_syllabus.tar.bz2
+          name: download_syllabus.tar.xz
+          path: download_syllabus.tar.xz
 
           

@@ -17,6 +17,7 @@ jobs:
         with:
           ref: php-to-xml_feature-artifact  # テスト用
           path: Temp/php-to-xml
+      # ダウンロード
       - run: mkdir -p Temp/artifact
       - name: Download
         run: |
@@ -30,9 +31,10 @@ jobs:
           # アーティファクトのダウンロード
           curl "https://www.googleapis.com/drive/v3/files/1-7RpPdsAdUNTPmB6FuMvIj3nDkVseSrx?alt=media" \
           -H "Authorization: Bearer ${TOKEN}" \
-          -o Temp/artifact/download_syllabus.tar.bz2
+          -o Temp/artifact/download_syllabus.tar.xz
+      # 展開
       - name: Extract
-        run: tar -jxvf download_syllabus.tar.bz2
+        run: tar -Jxvf download_syllabus.tar.xz
         working-directory: Temp/artifact
       # 環境構築
       - name: Setup .NET Core SDK
@@ -43,7 +45,7 @@ jobs:
       - name: run
         run: |
           dotnet build ./Temp/php-to-xml/PhpToXml.csproj 
-          dotnet ./Temp/php-to-xml/bin/Debug/net6.0/PhpToXml.dll ./Temp/artifact/download
+          dotnet ./Temp/php-to-xml/bin/Debug/net6.0/PhpToXml.dll ./Temp/artifact
       # push
       - name: git config
         run: |
