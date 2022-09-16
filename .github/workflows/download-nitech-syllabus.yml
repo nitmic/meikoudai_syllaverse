@@ -40,7 +40,7 @@ jobs:
           curl -X PATCH \
           "https://www.googleapis.com/upload/drive/v3/files/1-7RpPdsAdUNTPmB6FuMvIj3nDkVseSrx?uploadType=multipart" \
           -H "Authorization: Bearer ${TOKEN}" \
-          -F 'metadata={"name": "download_syllabus.tar.xz"};type=application/json'
+          -F 'metadata={"name": "download_syllabus.tar.xz"};type=application/json' \
           -F "file=@download_syllabus.tar.xz"
         # アーティファクトのアップロード
       - uses: actions/upload-artifact@v3
