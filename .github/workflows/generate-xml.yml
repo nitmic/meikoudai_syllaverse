@@ -7,24 +7,46 @@ jobs:
   generate-xml:
     runs-on: ubuntu-latest
     steps:
-      # 自リポジトリ
+      # 自リポジトリのチェックアウト
       - name: checkout this repository
         uses: actions/checkout@v3
       # .NET のリポジトリ
+      - run: mkdir -p Temp/php-to-xml
       - name: checkout .NET repository
         uses: actions/checkout@v3
         with:
-          ref: php-to-xml
-          path: Temp/
-
+          ref: php-to-xml_feature-artifact  # テスト用
+          path: Temp/php-to-xml
+      # ダウンロード
+      - run: mkdir -p Temp/artifact
+      - name: Download
+        run: |
+          # アクセストークンの取得
+          AUTH_JSON=$(curl -X POST "https://oauth2.googleapis.com/token" \
+          -d "client_id=${{ secrets.CLIENT_ID }}" \
+          -d "client_secret=${{ secrets.CLIENT_SECRET }}" \
+          -d "refresh_token=${{ secrets.REFRESH_TOKEN }}" \
+          -d "grant_type=refresh_token")
+          TOKEN=$(echo ${AUTH_JSON} | jq .access_token)
+          # アーティファクトのダウンロード
+          curl "https://www.googleapis.com/drive/v3/files/1-7RpPdsAdUNTPmB6FuMvIj3nDkVseSrx?alt=media" \
+          -H "Authorization: Bearer ${TOKEN}" \
+          -o Temp/artifact/download_syllabus.tar.xz
+      # 展開
+      - name: Extract
+        run: tar -Jxvf download_syllabus.tar.xz
+        working-directory: Temp/artifact
+      # 環境構築
       - name: Setup .NET Core SDK
         uses: actions/setup-dotnet@v2
         with:
           dotnet-version: '6.0.x'
+      # XMLファイルの出力
       - name: run
         run: |
-          dotnet build ./Temp/PhpToXml.csproj 
-          dotnet ./Temp/bin/Debug/net6.0/PhpToXml.dll
+          dotnet build ./Temp/php-to-xml/PhpToXml.csproj 
+          dotnet ./Temp/php-to-xml/bin/Debug/net6.0/PhpToXml.dll ./Temp/artifact
+      # push
       - name: git config
         run: |
           git config --global user.name GitHub Action
@@ -33,4 +55,4 @@ jobs:
         run: |
           git add .
           git commit -m "github actions"
-          git push origin main
+          git push origin ${{ github.ref_name }}
