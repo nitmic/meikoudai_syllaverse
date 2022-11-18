@@ -76,30 +76,6 @@ namespace Suggest
             TimeTablePrinter.printTimeTable(Timetable, "Timetable", Syllabus);
         }
 
-        /*
-        /// <summary>
-        /// XMLファイル一式をロードする
-        /// </summary>
-        /// <returns></returns>
-        public IEnumerator LoadXml()
-        {
-            Debug.Log("Load start");
-            yield return StartCoroutine(
-                TimeTableExporter.Import<Dictionary<int, Subject>>(
-                    Application.streamingAssetsPath + "/xml/Syllabus.xml",
-                    (result) => syllabus = result
-                )
-            );
-            yield return StartCoroutine(
-                TimeTableExporter.Import<List<int>[][][]>(
-                    Application.streamingAssetsPath + "/xml/TimeTable.xml",
-                    (result) => Timetable = result
-                )
-            );
-            Debug.Log("Load end");
-        }
-        */
-
         public void CreateSuggest(int half, string department, int grade)
         {
             // 空きコマか
@@ -139,6 +115,7 @@ namespace Suggest
                                     if (is_empty[day, j])
                                     {
                                         uiDrawTimeTable[day].Add(Syllabus[id]);
+                                        // 空きコマフラグを折る
                                         for (int i = Syllabus[id].startTime; i <= Syllabus[id].endTime; i++)
                                         {
                                             is_empty[day, i] = false;
