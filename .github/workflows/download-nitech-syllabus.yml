@@ -7,24 +7,45 @@ jobs:
   download-syllabus:
     runs-on: ubuntu-latest
     steps:
+        # チェックアウト
       - uses: actions/checkout@v3
         with:
           repository: nitmic-git/meikoudai_syllaverse
+        # Python環境の構築
       - name: setup python
         uses: actions/setup-python@v4
         with: 
           python-version: "3.10"
       - name: requests install
         run: pip install requests
+        # シラバスのダウンロード
       - name: download
+        run: python download.py
+        # 圧縮
+      - name: Compress
         run: |
-          python download.py
-      - name: git config
+          tar -cvf download_syllabus.tar -C Assets/StreamingAssets/download/ .
+          xz -zev9T0 --memlimit=6800MiB download_syllabus.tar
+        # ドライブにアップロード
+      - name: Upload Drive
         run: |
-          git config --global user.name GitHub Action
-          git config --global user.email action@github.com
-      - name: push
-        run: |
-          git add .
-          git commit -m "github actions"
-          git push origin main
+          # アクセストークン取得
+          AUTH_JSON=$(curl -X POST "https://oauth2.googleapis.com/token" \
+          -d "client_id=${{ secrets.CLIENT_ID }}" \
+          -d "client_secret=${{ secrets.CLIENT_SECRET }}" \
+          -d "refresh_token=${{ secrets.REFRESH_TOKEN }}" \
+          -d "grant_type=refresh_token")
+          TOKEN=$(echo ${AUTH_JSON} | jq .access_token)
+          # アップロード
+          curl -X PATCH \
+          "https://www.googleapis.com/upload/drive/v3/files/1-7RpPdsAdUNTPmB6FuMvIj3nDkVseSrx?uploadType=multipart" \
+          -H "Authorization: Bearer ${TOKEN}" \
+          -F 'metadata={"name": "download_syllabus.tar.xz"};type=application/json' \
+          -F "file=@download_syllabus.tar.xz"
+        # アーティファクトのアップロード
+      - uses: actions/upload-artifact@v3
+        with:
+          name: download_syllabus.tar.xz
+          path: download_syllabus.tar.xz
+
+          

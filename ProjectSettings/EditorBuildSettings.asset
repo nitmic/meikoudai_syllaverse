@@ -8,7 +8,10 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/SampleScene.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/WebView.unity
     guid: 8ba938c511655a54c82bf578c7d3a5ac
+  - enabled: 1
+    path: Assets/Scenes/ReadXML.unity
+    guid: 6d0670a1cc9f4944c976b420f9399fd4
   m_configObjects: {}
