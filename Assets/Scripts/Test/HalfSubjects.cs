@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Suggest;
 
-public class HalfSubjects : MonoBehaviour
+public class HalfSubjects //: MonoBehaviour
 {
     public List<Subject> Common = new List<Subject>();
     public List<Subject> LC = new List<Subject>();

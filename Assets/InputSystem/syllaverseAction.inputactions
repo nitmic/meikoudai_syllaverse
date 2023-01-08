@@ -1,5 +1,5 @@
 {
-    "name": "DefaultInputActions",
+    "name": "syllaverseAction",
     "maps": [
         {
             "name": "Player",
@@ -40,6 +40,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Cursor",
+                    "type": "Value",
+                    "id": "078a7ce2-d4ec-41a6-9a83-3030dcd6d2cb",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -295,6 +304,17 @@
                     "action": "Lift",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "da648bfd-b66c-4989-be82-b7ffd8d2e403",
+                    "path": "<Touchscreen>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Cursor",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },

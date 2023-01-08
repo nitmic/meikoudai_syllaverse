@@ -1,13 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Animations;
 using TMPro;
 
+[RequireComponent(typeof(LookAtConstraint))]
 public class NodeText : MonoBehaviour
 {
-    public TextMeshProUGUI Text;
+    public TMP_Text Text;
     public GameObject Target;
-    public Canvas canvas;
+    [SerializeField] LookAtConstraint constraint;
 
     public void SetText(string text)
     {
@@ -16,15 +18,15 @@ public class NodeText : MonoBehaviour
 
     public void Start()
     {
-        if (TryGetComponent<Canvas>(out canvas))
+        // 常にカメラを向く
+        if (TryGetComponent<LookAtConstraint>(out constraint))
         {
-            canvas.worldCamera = Camera.main;
-        }
-        Target = Camera.main.gameObject;
-    }
+            ConstraintSource source = new ConstraintSource();
+            source.sourceTransform = Camera.main.transform;
+            source.weight = 1f;
 
-    public void Update()
-    {
-        // this.transform.LookAt(Target.transform.position);
+            constraint.AddSource(source);
+            constraint.rotationOffset = new Vector3(0, 180, 0);
+        }
     }
 }

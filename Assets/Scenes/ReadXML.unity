@@ -190,7 +190,7 @@ GameObject:
   - component: {fileID: 500369896}
   - component: {fileID: 500369895}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: NodeTextGenerator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -208,7 +208,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 227a0e6a92978634aaf05fb03e588b29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefab: {fileID: 1588981832047114307, guid: bbaacd42c89b3e94bb95496db71f1bef, type: 3}
+  prefab: {fileID: 1291640143097275437, guid: 9d2b8ff1f292787469c28d706a7e4c95, type: 3}
   debugText: {fileID: 570274399}
 --- !u!4 &500369896
 Transform:
@@ -394,11 +394,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71732f764d7425544bd8077311704a76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSpeed: 25
-  animationSpeed: 0.17
+  speed: 10
+  decaySpeed: 0.5
+  jumpDistance: 1
   input: {fileID: 0}
   rigidbody: {fileID: 0}
-  moveDir: {x: 0, y: 0, z: 0}
+  localMoveDir: {x: 0, y: 0, z: 0}
 --- !u!54 &630017444
 Rigidbody:
   m_ObjectHideFlags: 0
