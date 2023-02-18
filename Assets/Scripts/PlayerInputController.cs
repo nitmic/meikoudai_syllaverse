@@ -17,7 +17,7 @@ public class PlayerInputController : MonoBehaviour
     [SerializeField] float jumpDistance = initJumpDistance;
     [SerializeField] PlayerInput input;
     [SerializeField] new Rigidbody rigidbody;
-    [SerializeField] Vector2 cursorPosition = new Vector2(0.5f, 0.5f);
+    [SerializeField] Vector2 cursorPosition;
     [SerializeField] Vector3 localMoveDir;
     private Vector3 Velocity
     {
@@ -45,6 +45,8 @@ public class PlayerInputController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        cursorPosition = new Vector2(Screen.width / 2, Screen.height / 2);
+
         input = GetComponent<PlayerInput>();
         rigidbody = GetComponent<Rigidbody>();
 
@@ -102,7 +104,7 @@ public class PlayerInputController : MonoBehaviour
     private void _OnLook(InputAction.CallbackContext callback)
     {
         Vector2 delta = callback.ReadValue<Vector2>();
-        Debug.Log($"Look : delta = {delta}");
+        // Debug.Log($"Look : delta = {delta}");
 
         // 視点移動
         Vector3 rotate = rigidbody.rotation.eulerAngles;
@@ -124,10 +126,14 @@ public class PlayerInputController : MonoBehaviour
         Ray screenRay = Camera.main.ScreenPointToRay(cursorPosition);
         rigidbody.position += jumpDistance * screenRay.direction;
         jumpDistance *= 1.2f;
+        Debug.DrawRay(Camera.main.transform.position, Camera.main.transform.forward, Color.blue, 5);
+        Debug.DrawRay(transform.position, screenRay.direction, Color.red, 5);
+        Debug.Log($"dir = {screenRay.direction}\nCdir= {Camera.main.transform.forward}\n{cursorPosition}:({Screen.width}, {Screen.height})");
     }
     private void _Cursor(InputAction.CallbackContext callback)
     {
         cursorPosition = callback.ReadValue<Vector2>();
+        Debug.Log(cursorPosition);
     }
 
     /// <summary>
