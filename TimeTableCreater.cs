@@ -71,16 +71,16 @@ namespace PhpToXml
             Console.WriteLine(sTableLog.ToString());
         }
 
-        public static void Export()
+        public static void Export(string xmlDirPath)
         {
-            TimeTableExporter.Export(timeTable, Path.Combine(Program.xmlDirPath, "TimeTable.xml"));
-            TimeTableExporter.Export(Syllabus, Path.Combine(Program.xmlDirPath, "Syllabus.xml"));
+            TimeTableExporter.Export(timeTable, Path.Combine(xmlDirPath, "TimeTable.xml"));
+            TimeTableExporter.Export(Syllabus, Path.Combine(xmlDirPath, "Syllabus.xml"));
         }
 
-        public static void CreateTimeTable()
+        public static void CreateTimeTable(string phpDirPath)
         {
             // phpのリストをロード
-            string[] fileNames = LoadPhpList();
+            string[] fileNames = LoadPhpList(phpDirPath);
 
             // 時間割に追加
             PhpToTimeTable(fileNames);
@@ -91,29 +91,26 @@ namespace PhpToXml
         /// <summary>
         /// 
         /// </summary>
-        /// <returns>phpリスト</returns>
-        static string[] LoadPhpList()
+        /// <returns>phpのパスリスト</returns>
+        static string[] LoadPhpList(string phpDirPath)
         {
             // Unityエディタ上での処理
-            DirectoryInfo dir = new DirectoryInfo(Program.phpDirPath);
+            DirectoryInfo dir = new DirectoryInfo(phpDirPath);
             FileInfo[] info = dir.GetFiles("*.php");
             string[] fName = new string[info.Length];
             for (int i = 0; i < info.Length; i++)
             {
-                fName[i] = info[i].Name;
+                fName[i] = info[i].FullName;
             }
             
             return fName;
         }
 
-        static void PhpToTimeTable(string[] fileNames)
+        static void PhpToTimeTable(string[] filePathArray)
         {
 
-            foreach (string f in fileNames)
+            foreach (string filepath in filePathArray)
             {
-                //Console.WriteLine(f);
-
-                string filepath = Path.Combine(Program.phpDirPath, f);
                 //Console.WriteLine(filepath);
 
                 string fileContent;
@@ -129,7 +126,7 @@ namespace PhpToXml
                 //Console.WriteLine($"( {mc.Count} )");
 
                 // 科目のデータを抽出
-                Subject subject = ExtractSubject(f, mc);
+                Subject subject = ExtractSubject(Path.GetFileName(filepath), mc);
                 Syllabus.Add(subject);
 
                 for (int i = subject.startTime; i <= subject.endTime; i++)

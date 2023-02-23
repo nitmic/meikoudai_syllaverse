@@ -4,7 +4,7 @@
     {
         public static string phpDirPath = "";
         public const string streamingAssetsPath = "Assets/StreamingAssets";
-        public static string xmlDirPath = Path.Combine(streamingAssetsPath, "xml");
+        public static readonly string xmlDirPath = Path.Combine(streamingAssetsPath, "xml");
 
         static void Main(string[] args)
         {
@@ -18,8 +18,8 @@
 
             if (Directory.Exists(phpDirPath))
             {
-                TimeTableCreator.CreateTimeTable();
-                TimeTableCreator.Export();
+                TimeTableCreator.CreateTimeTable(Program.phpDirPath);
+                TimeTableCreator.Export(Program.xmlDirPath);
             }
             else
             {
