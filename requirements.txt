@@ -1,0 +1,9 @@
+requests
+
+numpy
+scikit-learn
+pandas
+
+gensim
+mecab-python3
+unidic-lite
