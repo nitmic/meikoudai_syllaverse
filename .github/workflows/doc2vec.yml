@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  generate-xml:
+  doc2vec:
     runs-on: ubuntu-latest
     steps:
       # 自リポジトリのチェックアウト
