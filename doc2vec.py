@@ -63,8 +63,6 @@ def doc2TaggedDoc(text:str, tagName:str)->TaggedDocument:
 
     taggedDoc = TaggedDocument(words=word_list, tags=[tagName])
 
-    del m, sentences, group, word_list
-
     return taggedDoc
 
 def readFile(path : Path)-> str:
@@ -80,8 +78,8 @@ def Docs2Vectors300d(model:Doc2Vec, phpDir:Path):
     """
     シラバスファイルから300次元ベクトルに変換する．
     """
-    php = phpDir.glob("*.php")
-    vec_list = np.memmap('syllabusVector.dat', float, "w+", shape=(len(php), dim))
+    php = phpDir.glob("**/*.php")
+    vec_list = []
     name = []
 
     for i, path in enumerate(php):
@@ -93,13 +91,11 @@ def Docs2Vectors300d(model:Doc2Vec, phpDir:Path):
         taggedDoc = doc2TaggedDoc(text, path.stem)
 
         vec = model.infer_vector(taggedDoc.words)
-        vec_list[i, :] = vec
+        vec_list.append(vec)
         name.append(taggedDoc.tags[0])
 
-        del vec, taggedDoc
-        #gc.collect()
-
     df = pd.DataFrame(vec_list, index=name)
+    df.index.name = "id"
     return df
 
 def vector300d2vector3d(docVec:pd.DataFrame):
