@@ -2,21 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization;
+using System.Globalization;
+using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.Events;
+using CsvHelper;
 
 using TMPro;
-using System.Text;
 
 namespace Suggest
 {
     public static class TimeTableExporter
     {
+        public static readonly string syllabusPath = Application.streamingAssetsPath + "/xml/Syllabus.xml";
         private static Dictionary<int, Subject> syllabus;
         public static IReadOnlyDictionary<int, Subject> Syllabus { get => syllabus; }
+        public static readonly string featurePath = Application.streamingAssetsPath + "/csv/Feature.csv";
+        private static Dictionary<int, Vector3> syllabusFeature;
+        public static IReadOnlyDictionary<int, Vector3> SyllabusFeature { get => syllabusFeature; }
+        public static readonly string timetablePath = Application.streamingAssetsPath + "/xml/TimeTable.xml";
         private static List<int>[][][] timetable;
         public static IReadOnlyList<int>[][][] Timetable { get => timetable; }
-        private static List<Subject> syllabusList;
 
         /// <summary>
         /// メンバアクセス前に実行
@@ -29,8 +35,15 @@ namespace Suggest
                 yield break;
             }
 
-            yield return Import<List<Subject>>(UnityEngine.Application.streamingAssetsPath + "/xml/Syllabus.xml", (result)=>syllabusList = result);
-            yield return Import<List<int>[][][]>(UnityEngine.Application.streamingAssetsPath + "/xml/TimeTable.xml", (result)=>timetable = result);
+            List<Subject> syllabusList = default;
+
+            var task1 = ImportXML<List<Subject>>(syllabusPath, (result) => syllabusList = result);
+            var task2 = ImportXML<List<int>[][][]>(timetablePath, (result) => timetable = result);
+            var task3 = ImportFeature();
+
+            yield return task1;
+            yield return task2;
+            yield return task3;
 
             syllabus = new Dictionary<int, Subject>();
             foreach (Subject item in syllabusList)
@@ -64,7 +77,7 @@ namespace Suggest
         /// <param name="callback"><para>結果を受け取るコールバック.</para><para> (result)=>「変数」=result</para></param>
         /// <typeparam name="T">結果の型</typeparam>
         /// <returns></returns>
-        static IEnumerator Import<T>(string xmlPath, UnityAction<T> callback)
+        static IEnumerator ImportXML<T>(string xmlPath, UnityAction<T> callback)
         {
             T result;
             DataContractSerializer deserializer = new DataContractSerializer(typeof(T));
@@ -92,7 +105,7 @@ namespace Suggest
             yield break;
         }
 
-        
+
         public static IEnumerator DebugImport<T>(string xmlPath, UnityAction<T> callback, TextMeshProUGUI ugui)
         {
             ugui.text += "1";
@@ -134,6 +147,34 @@ namespace Suggest
             yield break;
         }
 
-        
+
+        static IEnumerator ImportFeature()
+        {
+#if UNITY_EDITOR
+            var reader = new StreamReader(featurePath);
+#else
+            // csvの取得
+            UnityWebRequest request = UnityWebRequest.Get(featurePath);
+            yield return request.SendWebRequest();
+
+            // TextReaderの生成
+            string data = request.downloadHandler.text;
+            var reader = new StringReader(data);
+#endif
+
+            syllabusFeature = new Dictionary<int, Vector3>();
+            using (reader)
+            {
+                using (var csv = new CsvReader(reader, CultureInfo.CurrentCulture))
+                {
+                    foreach (FeatureRecord line in csv.GetRecords<FeatureRecord>())
+                    {
+                        // idと位置を対応させる
+                        syllabusFeature.Add(line.id, line.position);
+                    }
+                }
+            }
+            yield break;
+        }
     }
 }

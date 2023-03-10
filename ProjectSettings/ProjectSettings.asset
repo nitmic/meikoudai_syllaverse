@@ -700,7 +700,7 @@ PlayerSettings:
   webGLThreadsSupport: 0
   webGLDecompressionFallback: 1
   scriptingDefineSymbols:
-    WebGL: ZIP_AVAILABLE
+    WebGL: ZIP_AVAILABLE;NUGET_PACKAGE_READY
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend: {}
