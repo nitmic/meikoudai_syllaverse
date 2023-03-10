@@ -155,6 +155,31 @@
       },
       "url": "https://packages.unity.com"
     },
+    "org.kumas.nuget-importer": {
+      "version": "https://github.com/kumaS-nu/NuGet-importer-for-Unity.git?path=NuGetImporterForUnity/Packages/NuGet Importer",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "479efc0a741bc872d817ba9c3831489489aa4e14"
+    },
+    "org.nuget.csvhelper": {
+      "version": "file:CsvHelper",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
+    "org.nuget.microsoft.bcl.asyncinterfaces": {
+      "version": "file:Microsoft.Bcl.AsyncInterfaces",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
+    "org.nuget.microsoft.bcl.hashcode": {
+      "version": "file:Microsoft.Bcl.HashCode",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
     "com.unity.modules.ai": {
       "version": "1.0.0",
       "depth": 0,

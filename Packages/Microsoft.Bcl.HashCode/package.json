@@ -1,0 +1,15 @@
+{
+    "name": "org.nuget.microsoft.bcl.hashcode",
+    "version": "1.1.1",
+    "displayName": "Microsoft.Bcl.HashCode",
+    "description": "Provides the HashCode type for .NET Standard 2.0. This package is not required starting with .NET Standard 2.1 and .NET Core 3.0.\n\nCommonly Used Types:\nSystem.HashCode\n \nWhen using NuGet 3.x this package requires at least version 3.4.",
+    "unity": "2018.3",
+    "keywords": [
+        ""
+    ],
+    "author": {
+        "name": "Microsoft",
+        "email": "",
+        "url": "https://github.com/dotnet/corefx"
+    }
+}

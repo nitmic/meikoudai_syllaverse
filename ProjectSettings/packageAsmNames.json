@@ -1,0 +1,22 @@
+{
+    "managedList": [
+        {
+            "packageName": "CsvHelper",
+            "fileNames": [
+                "CsvHelper"
+            ]
+        },
+        {
+            "packageName": "Microsoft.Bcl.AsyncInterfaces",
+            "fileNames": [
+                "Microsoft.Bcl.AsyncInterfaces"
+            ]
+        },
+        {
+            "packageName": "Microsoft.Bcl.HashCode",
+            "fileNames": [
+                "Microsoft.Bcl.HashCode"
+            ]
+        }
+    ]
+}
