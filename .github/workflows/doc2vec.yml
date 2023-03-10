@@ -15,7 +15,7 @@ jobs:
       - name: checkout .NET repository
         uses: actions/checkout@v3
         with:
-          ref: syllabus-analysis/feature/doc2ve  # テスト用
+          ref: syllabus-analysis/feature/doc2vec  # テスト用
           path: Temp/syllabus-analysis
 
       # PHPファイルのダウンロード
@@ -42,7 +42,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v4
         with: 
-          python-version: "3.10"
+          python-version: "3.9"
       - name: Install lib
         run: pip install -r requirements.txt
 
@@ -50,7 +50,7 @@ jobs:
       # モデルのダウンロード
       - name: model download
         run: |
-          apt install aria2
+          sudo apt install aria2
           aria2c -x5 -o ./Temp/jawiki.doc2vec.dmpv300d.tar.bz2 https://www.dropbox.com/s/raw/njez3f1pjv9i9xj/jawiki.doc2vec.dmpv300d.tar.bz2
           bzip2 -d ./Temp/jawiki.doc2vec.dmpv300d.tar.bz2
           tar -xvf ./Temp/jawiki.doc2vec.dmpv300d.tar -C ./Temp
@@ -58,7 +58,7 @@ jobs:
       - name: run
         run: |
           mkdir -p Assets/StreamingAssets/csv
-          python ./Temp/syllabus-analysis/vec2doc.py ./Temp/jawiki.doc2vec.dmpv300d.model ./Temp/artifact ./Assets/StreamingAssets/csv/feature.csv
+          python Temp/syllabus-analysis/doc2vec.py Temp/jawiki.doc2vec.dmpv300d.model Temp/artifact Assets/StreamingAssets/csv/feature.csv
 
       # push
       - name: git config
