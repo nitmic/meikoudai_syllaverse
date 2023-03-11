@@ -18,19 +18,18 @@ public class Test : MonoBehaviour
     void Start()
     {
         StartCoroutine(GenerateCoroutine());
-        debugText.text += "D";
-        debugText.text += "E";
-        debugText.text += "F";
-
     }
 
     IEnumerator GenerateCoroutine()
     {
+        debugText.text = "Now Loading ... (0%)";
+
         // XMLをロード
-        //yield return StartCoroutine(LoadXML());
+        //yield return TimeTableExporter.Import(debugText);
         yield return TimeTableExporter.Import();
 
-        debugText.text += "A";
+        debugText.text = "Now Loading ... (25%)";
+        yield return null;
 
         for (int i = 0; i < 8; i++)
         {
@@ -38,7 +37,8 @@ public class Test : MonoBehaviour
         }
         // 
 
-        debugText.text += "B";
+        debugText.text = "Now Loading ... (50%)";
+        yield return null;
 
         foreach (KeyValuePair<int, Subject> item in Subjects)
         {
@@ -68,69 +68,18 @@ public class Test : MonoBehaviour
             // Debug.Log(item.Key + ":" + item.Value.department[0]);   
         }
 
-        debugText.text += "C";
+        debugText.text = "Now Loading ... (75%)";
+        yield return null;
 
 
-        // デバッグ
+        // テキストの配置
         foreach ((int key, Subject sub) in Subjects)
         {
             Vector3 position = Vector3.Scale(TimeTableExporter.SyllabusFeature[key] , worldSize);
             Instantiate(prefab, position, Quaternion.identity).GetComponent<NodeText>().SetText(sub.name);
         }
-        /*
-        for (int i = 0; i < 8; i++)
-        {
-            foreach (Subject sub in halfSubjects[i].Common)
-            {
-                Instantiate(prefab, this.transform.position + Random.insideUnitSphere * 100, Quaternion.identity).GetComponent<NodeText>().SetText(sub.name);
-            }
-
-            foreach (Subject sub in halfSubjects[i].CS)
-            {
-                Instantiate(prefab, this.transform.position + this.transform.forward * 200 + Random.insideUnitSphere * 100, Quaternion.identity).GetComponent<NodeText>().SetText(sub.name);
-            }
-            this.transform.Rotate(0, 72, 0);
-            foreach (Subject sub in halfSubjects[i].LC)
-            {
-                Instantiate(prefab, this.transform.position + this.transform.forward * 200 + Random.insideUnitSphere * 100, Quaternion.identity).GetComponent<NodeText>().SetText(sub.name);
-            }
-            this.transform.Rotate(0, 72, 0);
-            foreach (Subject sub in halfSubjects[i].AC)
-            {
-                Instantiate(prefab, this.transform.position + this.transform.forward * 200 + Random.insideUnitSphere * 100, Quaternion.identity).GetComponent<NodeText>().SetText(sub.name);
-            }
-            this.transform.Rotate(0, 72, 0);
-            foreach (Subject sub in halfSubjects[i].PE)
-            {
-                Instantiate(prefab, this.transform.position + this.transform.forward * 200 + Random.insideUnitSphere * 100, Quaternion.identity).GetComponent<NodeText>().SetText(sub.name);
-            }
-            this.transform.Rotate(0, 72, 0);
-            foreach (Subject sub in halfSubjects[i].EM)
-            {
-                Instantiate(prefab, this.transform.position + this.transform.forward * 200 + Random.insideUnitSphere * 100, Quaternion.identity).GetComponent<NodeText>().SetText(sub.name);
-            }
-            this.transform.Rotate(0, 72, 0);
-            this.transform.Translate(0, 30, 0);
-        }
-        */
-
-        yield return null;
+        
+        debugText.text = "";
     }
-
-    public IEnumerator LoadXML()
-    {
-        List<Subject> l;
-
-        yield return StartCoroutine(
-            TimeTableExporter.DebugImport<List<Subject>>(
-                Application.streamingAssetsPath + "/xml/Syllabus.xml",
-                (result) => l = result,
-                debugText
-            )
-        );
-
-        yield return StartCoroutine(TimeTableExporter.Import());
-    }
-
 }
 
