@@ -116,6 +116,8 @@ def vector300d2vector3d(docVec:pd.DataFrame):
     feature = pca.transform(docVecStd)
     pc_df = pd.DataFrame(feature, columns=[f"PC{x+1}" for x in range(len(docVecStd.columns))], index=docVec.index)
 
+    pc_df = pc_df.apply(lambda x: (x - x.mean())/(x.max() - x.min()))
+
     return pc_df
 
 if __name__ == "__main__":
