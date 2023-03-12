@@ -10,13 +10,7 @@ jobs:
       # 自リポジトリのチェックアウト
       - name: checkout this repository
         uses: actions/checkout@v3
-      # .NET のリポジトリ
-      - run: mkdir -p Temp/syllabus-analysis
-      - name: checkout .NET repository
-        uses: actions/checkout@v3
-        with:
-          ref: syllabus-analysis/feature/artifact  # テスト用
-          path: Temp/syllabus-analysis
+
       # ダウンロード
       - run: mkdir -p Temp/artifact
       - name: Download
@@ -28,24 +22,29 @@ jobs:
           -d "refresh_token=${{ secrets.REFRESH_TOKEN }}" \
           -d "grant_type=refresh_token")
           TOKEN=$(echo ${AUTH_JSON} | jq .access_token)
+
           # アーティファクトのダウンロード
           curl "https://www.googleapis.com/drive/v3/files/1-7RpPdsAdUNTPmB6FuMvIj3nDkVseSrx?alt=media" \
           -H "Authorization: Bearer ${TOKEN}" \
           -o Temp/artifact/download_syllabus.tar.xz
+
       # 展開
       - name: Extract
         run: tar -Jxvf download_syllabus.tar.xz
         working-directory: Temp/artifact
+
       # 環境構築
       - name: Setup .NET Core SDK
         uses: actions/setup-dotnet@v2
         with:
           dotnet-version: '6.0.x'
+
       # XMLファイルの出力
       - name: run
         run: |
-          dotnet build ./Temp/syllabus-analysis/PhpToXml.csproj 
-          dotnet ./Temp/syllabus-analysis/bin/Debug/net6.0/PhpToXml.dll ./Temp/artifact
+          dotnet build ./syllabus_analysis/PhpToXml.csproj 
+          dotnet ./syllabus_analysis/bin/Debug/net6.0/PhpToXml.dll ./Temp/artifact ./meikoudai_syllaverse/Assets/StreamingAssets/xml
+
       # push
       - name: git config
         run: |

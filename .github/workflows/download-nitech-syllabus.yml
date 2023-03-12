@@ -11,6 +11,7 @@ jobs:
       - uses: actions/checkout@v3
         with:
           repository: nitmic-git/meikoudai_syllaverse
+
         # Python環境の構築
       - name: setup python
         uses: actions/setup-python@v4
@@ -18,14 +19,17 @@ jobs:
           python-version: "3.10"
       - name: Install lib
         run: pip install -r requirements.txt
+
         # シラバスのダウンロード
       - name: download
         run: python download.py
+
         # 圧縮
       - name: Compress
         run: |
-          tar -cvf download_syllabus.tar -C Assets/StreamingAssets/download/ .
+          tar -cvf download_syllabus.tar -C meikoudai_syllaverse/Assets/StreamingAssets/download/ .
           xz -zev9T0 --memlimit=6800MiB download_syllabus.tar
+
         # ドライブにアップロード
       - name: Upload Drive
         run: |
@@ -36,12 +40,14 @@ jobs:
           -d "refresh_token=${{ secrets.REFRESH_TOKEN }}" \
           -d "grant_type=refresh_token")
           TOKEN=$(echo ${AUTH_JSON} | jq .access_token)
+
           # アップロード
           curl -X PATCH \
           "https://www.googleapis.com/upload/drive/v3/files/1-7RpPdsAdUNTPmB6FuMvIj3nDkVseSrx?uploadType=multipart" \
           -H "Authorization: Bearer ${TOKEN}" \
           -F 'metadata={"name": "download_syllabus.tar.xz"};type=application/json' \
           -F "file=@download_syllabus.tar.xz"
+
         # アーティファクトのアップロード
       - uses: actions/upload-artifact@v3
         with:

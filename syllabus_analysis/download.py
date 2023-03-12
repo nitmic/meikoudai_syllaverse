@@ -7,8 +7,8 @@ from pprint import pprint
 
 
 URL = 'https://syllabus.ict.nitech.ac.jp/search.php'
-SEARCH_PATH = 'Assets/StreamingAssets/search'
-SUBJECT_PATH = 'Assets/StreamingAssets/download'
+SEARCH_PATH = 'meikoudai_syllaverse/Assets/StreamingAssets/search'
+SUBJECT_PATH = 'meikoudai_syllaverse/Assets/StreamingAssets/download'
 
 
 def wget(URL: str, savePath: str, postData: dict = None):

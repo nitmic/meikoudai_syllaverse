@@ -3,13 +3,13 @@
     public static class Program
     {
         public static string phpDirPath = "";
-        public const string streamingAssetsPath = "Assets/StreamingAssets";
-        public static readonly string xmlDirPath = Path.Combine(streamingAssetsPath, "xml");
+        public static string xmlDirPath = "";
 
         static void Main(string[] args)
         {
             Console.WriteLine($"{Directory.GetCurrentDirectory()}> ");
             phpDirPath = args[0];
+            xmlDirPath = args[1];
 
             if (!Directory.Exists(xmlDirPath))
             {

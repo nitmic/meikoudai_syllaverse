@@ -10,13 +10,6 @@ jobs:
       # 自リポジトリのチェックアウト
       - name: checkout this repository
         uses: actions/checkout@v3
-      # syllabus-analysis のリポジトリ
-      - run: mkdir -p Temp/syllabus-analysis
-      - name: checkout .NET repository
-        uses: actions/checkout@v3
-        with:
-          ref: syllabus-analysis/feature/doc2vec  # テスト用
-          path: Temp/syllabus-analysis
 
       # PHPファイルのダウンロード
       - run: mkdir -p Temp/artifact
@@ -57,8 +50,8 @@ jobs:
       # Pythonスクリプト実行
       - name: run
         run: |
-          mkdir -p Assets/StreamingAssets/csv
-          python Temp/syllabus-analysis/doc2vec.py Temp/jawiki.doc2vec.dmpv300d.model Temp/artifact Assets/StreamingAssets/csv/feature.csv
+          mkdir -p meikoudai_syllaverse/Assets/StreamingAssets/csv
+          python syllabus_analysis/doc2vec.py Temp/jawiki.doc2vec.dmpv300d.model Temp/artifact meikoudai_syllaverse/Assets/StreamingAssets/csv/feature.csv
 
       # push
       - name: git config
