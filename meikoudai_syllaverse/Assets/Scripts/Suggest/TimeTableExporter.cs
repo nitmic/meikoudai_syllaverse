@@ -134,7 +134,7 @@ namespace Suggest
                         const int ID = 0;
                         const int X = 1;
                         const int Y = 2;
-                        const int Z = 2;
+                        const int Z = 3;
                         int id = csv.GetField<int>(ID);
                         Vector3 position = new Vector3(csv.GetField<float>(X), csv.GetField<float>(Y), csv.GetField<float>(Z));
                         syllabusFeature.Add(id, position);

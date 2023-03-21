@@ -75,10 +75,12 @@ public class Test : MonoBehaviour
         // テキストの配置
         foreach ((int key, Subject sub) in Subjects)
         {
-            Vector3 position = Vector3.Scale(TimeTableExporter.SyllabusFeature[key] , worldSize);
-            Instantiate(prefab, position, Quaternion.identity).GetComponent<NodeText>().SetText(sub.name);
+            Vector3 position = Vector3.Scale(TimeTableExporter.SyllabusFeature[key], worldSize);
+            GameObject go = Instantiate(prefab, position, Quaternion.identity);
+            go.name = $"{sub.name}({key})";
+            go.GetComponent<NodeText>().SetText(sub.name);
         }
-        
+
         debugText.text = "";
     }
 }
