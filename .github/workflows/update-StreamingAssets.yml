@@ -1,0 +1,177 @@
+name: Update StreamingAssets
+
+on:
+  workflow_dispatch:
+  schedule:
+      # 4月1日00:00(UTC)に実行
+    - cron: "0 0 1 4 *"
+
+jobs:
+  scraping-syllabus:
+    runs-on: ubuntu-latest
+    steps:
+        # チェックアウト
+      - uses: actions/checkout@v3
+
+        # Python環境の構築
+      - name: setup python
+        uses: actions/setup-python@v4
+        with: 
+          python-version: "3.10"
+      - name: Install lib
+        run: pip install -r requirements.txt
+
+        # シラバスのダウンロード
+      - name: download
+        run: python download.py
+
+        # 圧縮
+      - name: Compress
+        run: |
+          mkdir -p meikoudai_syllaverse/Assets/StreamingAssets/download/
+          tar -cvf download_syllabus.tar -C meikoudai_syllaverse/Assets/StreamingAssets/download/ .
+          xz -zev9T0 --memlimit=6800MiB download_syllabus.tar
+
+        # ドライブにアップロード
+      - name: Upload Drive
+        run: |
+          # アクセストークン取得
+          AUTH_JSON=$(curl -X POST "https://oauth2.googleapis.com/token" \
+          -d "client_id=${{ secrets.CLIENT_ID }}" \
+          -d "client_secret=${{ secrets.CLIENT_SECRET }}" \
+          -d "refresh_token=${{ secrets.REFRESH_TOKEN }}" \
+          -d "grant_type=refresh_token")
+          TOKEN=$(echo ${AUTH_JSON} | jq .access_token)
+
+          # アップロード
+          curl -X PATCH \
+          "https://www.googleapis.com/upload/drive/v3/files/1-7RpPdsAdUNTPmB6FuMvIj3nDkVseSrx?uploadType=multipart" \
+          -H "Authorization: Bearer ${TOKEN}" \
+          -F 'metadata={"name": "download_syllabus.tar.xz"};type=application/json' \
+          -F "file=@download_syllabus.tar.xz"
+
+        # アーティファクトのアップロード
+      - uses: actions/upload-artifact@v3
+        with:
+          name: download_syllabus.tar.xz
+          path: download_syllabus.tar.xz
+
+  generate-xml:
+    needs: scraping-syllabus
+    runs-on: ubuntu-latest
+    steps:
+      # 自リポジトリのチェックアウト
+      - name: checkout this repository
+        uses: actions/checkout@v3
+
+      # ダウンロード
+      - run: mkdir -p Temp/artifact
+      - uses: actions/download-artifact@v3
+        with:
+          name: download_syllabus.tar.xz
+          path: Temp/artifact/
+
+      # 展開
+      - name: Extract
+        run: tar -Jxvf download_syllabus.tar.xz
+        working-directory: Temp/artifact
+
+      # 環境構築
+      - name: Setup .NET Core SDK
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: '6.0.x'
+
+      # XMLファイルの出力
+      - name: run
+        run: |
+          dotnet build ./syllabus_analysis/PhpToXml.csproj 
+          dotnet ./syllabus_analysis/bin/Debug/net6.0/PhpToXml.dll ./Temp/artifact ./meikoudai_syllaverse/Assets/StreamingAssets/xml
+
+        # アーティファクトのアップロード
+      - uses: actions/upload-artifact@v3
+        with:
+          name: xml
+          path: meikoudai_syllaverse/Assets/StreamingAssets/xml
+
+          
+  doc2vec:
+    needs: scraping-syllabus
+    runs-on: ubuntu-latest
+    steps:
+      # 自リポジトリのチェックアウト
+      - name: checkout this repository
+        uses: actions/checkout@v3
+
+      # PHPファイルのダウンロード
+      - run: mkdir -p Temp/artifact
+      - uses: actions/download-artifact@v3
+        with:
+          name: download_syllabus.tar.xz
+          path: Temp/artifact/
+      # 展開
+      - name: Extract
+        run: tar -Jxvf download_syllabus.tar.xz
+        working-directory: Temp/artifact
+
+      # 環境構築
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with: 
+          python-version: "3.9"
+      - name: Install lib
+        run: pip install -r requirements.txt
+
+      # CSVファイルの出力
+      # モデルのダウンロード
+      - name: model download
+        run: |
+          sudo apt install aria2
+          aria2c -x5 -o ./Temp/jawiki.doc2vec.dmpv300d.tar.bz2 https://www.dropbox.com/s/raw/njez3f1pjv9i9xj/jawiki.doc2vec.dmpv300d.tar.bz2
+          bzip2 -d ./Temp/jawiki.doc2vec.dmpv300d.tar.bz2
+          tar -xvf ./Temp/jawiki.doc2vec.dmpv300d.tar -C ./Temp
+      # Pythonスクリプト実行
+      - name: run
+        run: |
+          mkdir -p meikoudai_syllaverse/Assets/StreamingAssets/csv
+          python syllabus_analysis/doc2vec.py Temp/jawiki.doc2vec.dmpv300d.model Temp/artifact meikoudai_syllaverse/Assets/StreamingAssets/csv/feature.csv
+
+        # アーティファクトのアップロード
+      - uses: actions/upload-artifact@v3
+        with:
+          name: csv
+          path: meikoudai_syllaverse/Assets/StreamingAssets/csv
+
+  commit-push:
+    needs: [generate-xml, doc2vec]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      # 既存のものを削除
+      - name: delete
+        run: |
+          rm -r meikoudai_syllaverse/Assets/StreamingAssets/xml
+          rm -r meikoudai_syllaverse/Assets/StreamingAssets/csv
+
+        # アーティファクトのダウンロード
+      - uses: actions/download-artifact@v3
+        with:
+          name: xml
+          path: meikoudai_syllaverse/Assets/StreamingAssets
+      - uses: actions/download-artifact@v3
+        with:
+          name: csv
+          path: meikoudai_syllaverse/Assets/StreamingAssets
+
+      # push ###############
+      - name: git config
+        run: |
+          git config --global user.name GitHub Action
+          git config --global user.email action@github.com
+      - name: push
+        run: |
+          git add .
+          git commit -m "github actions"
+          git push origin ${{ github.ref_name }}
+      ##########################

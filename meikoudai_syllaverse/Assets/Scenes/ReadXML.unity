@@ -209,7 +209,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefab: {fileID: 1291640143097275437, guid: 9d2b8ff1f292787469c28d706a7e4c95, type: 3}
-  worldSize: {x: 16.666666, y: 16.666666, z: 16.666666}
+  worldSize: {x: 750, y: 750, z: 750}
   debugText: {fileID: 570274399}
 --- !u!4 &500369896
 Transform:
