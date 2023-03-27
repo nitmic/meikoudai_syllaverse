@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   schedule:
       # 4月1日00:00(UTC)に実行
-    - cron: "0 0 1 4 *"
+    - cron: "0 0 15 3 *"
 
 jobs:
   scraping-syllabus:
@@ -23,7 +23,7 @@ jobs:
 
         # シラバスのダウンロード
       - name: download
-        run: python download.py
+        run: python syllabus_analysis/download.py
 
         # 圧縮
       - name: Compress

@@ -22,7 +22,7 @@ jobs:
 
         # シラバスのダウンロード
       - name: download
-        run: python download.py
+        run: python syllabus_analysis/download.py
 
         # 圧縮
       - name: Compress
