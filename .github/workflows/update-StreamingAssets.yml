@@ -168,11 +168,11 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           name: xml
-          path: ${{ env.unityProjectPath }}/Assets/StreamingAssets
+          path: ${{ env.unityProjectPath }}/Assets/StreamingAssets/xml
       - uses: actions/download-artifact@v3
         with:
           name: csv
-          path: ${{ env.unityProjectPath }}/Assets/StreamingAssets
+          path: ${{ env.unityProjectPath }}/Assets/StreamingAssets/csv
 
       # push ###############
       - name: git config
@@ -207,7 +207,7 @@ jobs:
           # 今回は WebGL ビルドを行いたいため WebGL を指定する
           targetPlatform: WebGL
           unityVersion: ${{ vars.UNITY_VERSION }}
-          unityProjectPath: ${{ env.unityProjectPath }}
+          projectPath: ${{ env.unityProjectPath }}
           buildsPath: ${{ env.buildFolder }}
 
       # Builder で出力した WebGL ビルドを GitHub Pages にデプロイする
@@ -219,6 +219,8 @@ jobs:
           # デプロイ用ビルドフォルダパスを指定する
           # GameCI の Builder はデフォルトでは build フォルダにビルド内容を出力する
           folder: ${{ env.buildFolder }}
+          git-config-name: GitHub Action
+          git-config-email: action@github.com
 
       # Builder で出力した WebGL ビルドをアーティファクトでダウンロード可能にする
       - name: Upload the WebGL Build
