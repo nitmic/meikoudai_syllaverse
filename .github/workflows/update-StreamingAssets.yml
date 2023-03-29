@@ -8,9 +8,10 @@ on:
 
 env:
   driveFileId: 1-7RpPdsAdUNTPmB6FuMvIj3nDkVseSrx
-  buildFolder: build
   phpFolder: Temp/artifact
   modelFolder: Temp/model
+  unityProjectPath: meikoudai_syllaverse
+  buildFolder: meikoudai_syllaverse/build
 
 jobs:
   scraping-syllabus:
@@ -34,8 +35,8 @@ jobs:
         # 圧縮
       - name: Compress
         run: |
-          mkdir -p meikoudai_syllaverse/Assets/StreamingAssets/download/
-          tar -cvf download_syllabus.tar -C meikoudai_syllaverse/Assets/StreamingAssets/download/ .
+          mkdir -p ${{ env.unityProjectPath }}/Assets/StreamingAssets/download/
+          tar -cvf download_syllabus.tar -C ${{ env.unityProjectPath }}/Assets/StreamingAssets/download/ .
           xz -zev9T0 --memlimit=6800MiB download_syllabus.tar
 
         # ドライブにアップロード
@@ -93,13 +94,13 @@ jobs:
       - name: run
         run: |
           dotnet build ./syllabus_analysis/PhpToXml/PhpToXml.csproj 
-          dotnet ./syllabus_analysis/PhpToXml/bin/Debug/net6.0/PhpToXml.dll ./${{ env.phpFolder }} ./meikoudai_syllaverse/Assets/StreamingAssets/xml
+          dotnet ./syllabus_analysis/PhpToXml/bin/Debug/net6.0/PhpToXml.dll ./${{ env.phpFolder }} ${{ env.unityProjectPath }}/Assets/StreamingAssets/xml
 
         # アーティファクトのアップロード
       - uses: actions/upload-artifact@v3
         with:
           name: xml
-          path: meikoudai_syllaverse/Assets/StreamingAssets/xml
+          path: ${{ env.unityProjectPath }}/Assets/StreamingAssets/xml
 
           
   doc2vec:
@@ -141,14 +142,14 @@ jobs:
       # Pythonスクリプト実行
       - name: run
         run: |
-          mkdir -p meikoudai_syllaverse/Assets/StreamingAssets/csv
-          python syllabus_analysis/doc2vec.py ${{ env.modelFolder }}/jawiki.doc2vec.dmpv300d.model ${{ env.phpFolder }} meikoudai_syllaverse/Assets/StreamingAssets/csv/feature.csv
+          mkdir -p ${{ env.unityProjectPath }}/Assets/StreamingAssets/csv
+          python syllabus_analysis/doc2vec.py ${{ env.modelFolder }}/jawiki.doc2vec.dmpv300d.model ${{ env.phpFolder }} ${{ env.unityProjectPath }}/Assets/StreamingAssets/csv/feature.csv
 
         # アーティファクトのアップロード
       - uses: actions/upload-artifact@v3
         with:
           name: csv
-          path: meikoudai_syllaverse/Assets/StreamingAssets/csv
+          path: ${{ env.unityProjectPath }}/Assets/StreamingAssets/csv
 
 
   commit-push:
@@ -160,18 +161,18 @@ jobs:
       # 既存のものを削除
       - name: delete
         run: |
-          rm -r meikoudai_syllaverse/Assets/StreamingAssets/xml
-          rm -r meikoudai_syllaverse/Assets/StreamingAssets/csv
+          rm -r ${{ env.unityProjectPath }}/Assets/StreamingAssets/xml
+          rm -r ${{ env.unityProjectPath }}/Assets/StreamingAssets/csv
 
         # アーティファクトのダウンロード
       - uses: actions/download-artifact@v3
         with:
           name: xml
-          path: meikoudai_syllaverse/Assets/StreamingAssets
+          path: ${{ env.unityProjectPath }}/Assets/StreamingAssets
       - uses: actions/download-artifact@v3
         with:
           name: csv
-          path: meikoudai_syllaverse/Assets/StreamingAssets
+          path: ${{ env.unityProjectPath }}/Assets/StreamingAssets
 
       # push ###############
       - name: git config
@@ -206,6 +207,8 @@ jobs:
           # 今回は WebGL ビルドを行いたいため WebGL を指定する
           targetPlatform: WebGL
           unityVersion: ${{ vars.UNITY_VERSION }}
+          unityProjectPath: ${{ env.unityProjectPath }}
+          buildsPath: ${{ env.buildFolder }}
 
       # Builder で出力した WebGL ビルドを GitHub Pages にデプロイする
       - name: Deploy to GitHub Pages

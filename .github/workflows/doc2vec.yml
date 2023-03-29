@@ -1,4 +1,4 @@
-name: doc2vec
+name: Embedding with doc2vec
 
 on: 
   workflow_dispatch:

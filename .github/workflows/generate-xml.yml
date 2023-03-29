@@ -1,4 +1,4 @@
-name: generate-xml
+name: Run XML Serialization
 
 on: 
   workflow_dispatch:

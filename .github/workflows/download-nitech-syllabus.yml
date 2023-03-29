@@ -1,4 +1,4 @@
-name: download nitech syllabus
+name: Download Nitech syllabus
 
 on:
   workflow_dispatch:
