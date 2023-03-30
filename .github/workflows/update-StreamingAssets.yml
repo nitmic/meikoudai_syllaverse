@@ -218,7 +218,7 @@ jobs:
           branch: ${{ vars.DEPLOY_BRANCH }}
           # デプロイ用ビルドフォルダパスを指定する
           # GameCI の Builder はデフォルトでは build フォルダにビルド内容を出力する
-          folder: ${{ env.buildFolder }}
+          folder: ${{ env.buildFolder }}/WebGL/WebGL
           git-config-name: GitHub Action
           git-config-email: action@github.com
 
@@ -227,5 +227,5 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: Build
-          path: ${{ env.buildFolder }}
+          path: ${{ env.buildFolder }}/WebGL/WebGL
     
