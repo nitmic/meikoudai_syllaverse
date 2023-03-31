@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Suggest;
-
+using Cysharp.Threading.Tasks;
 using TMPro;
 
 public class Test : MonoBehaviour
@@ -17,19 +17,27 @@ public class Test : MonoBehaviour
 
     void Start()
     {
-        StartCoroutine(GenerateCoroutine());
+        GenerateCoroutine().Forget();
     }
 
-    IEnumerator GenerateCoroutine()
+    async UniTask GenerateCoroutine()
     {
         debugText.text = "Now Loading ... (0%)";
 
         // XMLをロード
-        //yield return TimeTableExporter.Import(debugText);
-        yield return TimeTableExporter.Import();
+        try
+        {
+            await TimeTableExporter.Import();
+        }
+        catch (System.Exception e)
+        {
+            // 例外の時はUIに表示
+            debugText.text += "\n" + e.ToString();
+            throw e;
+        }
 
         debugText.text = "Now Loading ... (25%)";
-        yield return null;
+        await UniTask.Yield();
 
         for (int i = 0; i < 8; i++)
         {
@@ -38,7 +46,7 @@ public class Test : MonoBehaviour
         // 
 
         debugText.text = "Now Loading ... (50%)";
-        yield return null;
+        await UniTask.Yield();
 
         foreach (KeyValuePair<int, Subject> item in Subjects)
         {
@@ -69,7 +77,7 @@ public class Test : MonoBehaviour
         }
 
         debugText.text = "Now Loading ... (75%)";
-        yield return null;
+        await UniTask.Yield();
 
 
         // テキストの配置

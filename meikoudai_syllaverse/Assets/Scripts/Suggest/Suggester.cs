@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using Cysharp.Threading.Tasks;
 
 namespace Suggest
 {
@@ -42,8 +43,6 @@ namespace Suggest
 
         private void Awake()
         {
-            StartCoroutine(TimeTableExporter.Import());
-
             // リスト初期化
             uiDrawTimeTable = new HashSet<Subject>[Day.DAY_MAX];
             suggestTimeTable = new HashSet<Subject>[Day.DAY_MAX];

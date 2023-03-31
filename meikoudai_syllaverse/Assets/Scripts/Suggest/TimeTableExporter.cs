@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.Events;
 using CsvHelper;
+using Cysharp.Threading.Tasks;
 
 using TMPro;
 
@@ -28,22 +29,22 @@ namespace Suggest
         /// メンバアクセス前に実行
         /// Syllabus, Timetableメンバの初期化（ロード）を行う。
         /// </summary>
-        public static IEnumerator Import()
+        public static async UniTask Import()
         {
             if (timetable is not null)
             {
-                yield break;
+                return;
             }
 
             List<Subject> syllabusList = default;
 
-            var task1 = ImportXML<List<Subject>>(syllabusPath, (result) => syllabusList = result);
-            var task2 = ImportXML<List<int>[][][]>(timetablePath, (result) => timetable = result);
+            var task1 = ImportXML<List<Subject>>(syllabusPath);
+            var task2 = ImportXML<List<int>[][][]>(timetablePath);
             var task3 = ImportFeature();
 
-            yield return task1;
-            yield return task2;
-            yield return task3;
+            syllabusList = await task1;
+            timetable = await task2;
+            await task3;
 
             syllabus = new Dictionary<int, Subject>();
             foreach (Subject item in syllabusList)
@@ -52,27 +53,27 @@ namespace Suggest
             }
         }
 
-        public static IEnumerator Import(TextMeshProUGUI ugui)
+        public static async UniTask Import(TextMeshProUGUI ugui)
         {
             if (timetable is not null)
             {
-                yield break;
+                return;
             }
 
             ugui.text += "\n1";
 
             List<Subject> syllabusList = default;
 
-            var task1 = ImportXML<List<Subject>>(syllabusPath, (result) => syllabusList = result);
-            var task2 = ImportXML<List<int>[][][]>(timetablePath, (result) => timetable = result);
+            var task1 = ImportXML<List<Subject>>(syllabusPath);
+            var task2 = ImportXML<List<int>[][][]>(timetablePath);
             var task3 = ImportFeature(ugui);
 
             ugui.text += "2";
-            yield return task1;
+            syllabusList = await task1;
             ugui.text += "3";
-            yield return task2;
+            timetable = await task2;
             ugui.text += "4";
-            yield return task3;
+            await task3;
             ugui.text += "5";
 
             syllabus = new Dictionary<int, Subject>();
@@ -90,13 +91,13 @@ namespace Suggest
         /// <param name="callback"><para>結果を受け取るコールバック.</para><para> (result)=>「変数」=result</para></param>
         /// <typeparam name="T">結果の型</typeparam>
         /// <returns></returns>
-        static IEnumerator ImportXML<T>(string xmlPath, UnityAction<T> callback)
+        static async UniTask<T> ImportXML<T>(string xmlPath)
         {
             T result;
             DataContractSerializer deserializer = new DataContractSerializer(typeof(T));
 
             UnityWebRequest request = UnityWebRequest.Get(xmlPath);
-            yield return request.SendWebRequest();
+            await request.SendWebRequest();
 
             byte[] data = request.downloadHandler.data;
             using (MemoryStream memory = new MemoryStream(data))
@@ -104,16 +105,14 @@ namespace Suggest
                 result = (T)deserializer.ReadObject(memory);
             }
 
-            callback(result);
-
-            yield break;
+            return result;
         }
 
-        static IEnumerator ImportFeature()
+        static async UniTask ImportFeature()
         {
             // csvの取得
             UnityWebRequest request = UnityWebRequest.Get(featurePath);
-            yield return request.SendWebRequest();
+            await request.SendWebRequest();
 
             // TextReaderの生成
             string data = request.downloadHandler.text;
@@ -126,10 +125,10 @@ namespace Suggest
                 using (var csv = new CsvReader(reader, CultureInfo.CurrentCulture))
                 {
                     // ヘッダ読み込み
-                    csv.Read();
+                    await csv.ReadAsync();
                     csv.ReadHeader();
                     // 値読み込み
-                    while (csv.Read())
+                    while (await csv.ReadAsync())
                     {
                         const int ID = 0;
                         const int X = 1;
@@ -141,16 +140,14 @@ namespace Suggest
                     }
                 }
             }
-
-            yield break;
         }
 
-        static IEnumerator ImportFeature(TextMeshProUGUI text)
+        static async UniTask ImportFeature(TextMeshProUGUI text)
         {
             text.text += "\na";
             // csvの取得
             UnityWebRequest request = UnityWebRequest.Get(featurePath);
-            yield return request.SendWebRequest();
+            await request.SendWebRequest();
 
             text.text += "b";
 
@@ -160,38 +157,28 @@ namespace Suggest
 
             text.text += "c";
 
-            try
+            syllabusFeature = new Dictionary<int, Vector3>();
+            using (reader)
             {
-                syllabusFeature = new Dictionary<int, Vector3>();
-                using (reader)
+                // csvの読み込み
+                using (var csv = new CsvReader(reader, CultureInfo.CurrentCulture))
                 {
-                    // csvの読み込み
-                    using (var csv = new CsvReader(reader, CultureInfo.CurrentCulture))
+                    // ヘッダ読み込み
+                    await csv.ReadAsync();
+                    csv.ReadHeader();
+                    // 値読み込み
+                    while (await csv.ReadAsync())
                     {
-                        // ヘッダ読み込み
-                        csv.Read();
-                        csv.ReadHeader();
-                        // 値読み込み
-                        while (csv.Read())
-                        {
-                            const int ID = 0;
-                            const int X = 1;
-                            const int Y = 2;
-                            const int Z = 2;
-                            int id = csv.GetField<int>(ID);
-                            Vector3 position = new Vector3(csv.GetField<float>(X), csv.GetField<float>(Y), csv.GetField<float>(Z));
-                            syllabusFeature.Add(id, position);
-                        }
+                        const int ID = 0;
+                        const int X = 1;
+                        const int Y = 2;
+                        const int Z = 2;
+                        int id = csv.GetField<int>(ID);
+                        Vector3 position = new Vector3(csv.GetField<float>(X), csv.GetField<float>(Y), csv.GetField<float>(Z));
+                        syllabusFeature.Add(id, position);
                     }
                 }
             }
-            catch (System.Exception e)
-            {
-                text.text += "\n" + e.ToString();
-                throw;
-            }
-
-            yield break;
         }
     }
 }
