@@ -18,7 +18,7 @@ public class WebViewSample : MonoBehaviour
         webViewObject.SetMargins(100, 100, 100, 100);
         webViewObject.SetVisibility(true);
         // お好きなURLにしてください
-        webViewObject.LoadURL("https://www.google.co.jp");
+        webViewObject.LoadURL("https://www.example.com");
     }
 
     void OnGUI()

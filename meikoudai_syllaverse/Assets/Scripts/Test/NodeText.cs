@@ -4,12 +4,12 @@ using UnityEngine;
 using UnityEngine.Animations;
 using TMPro;
 
-[RequireComponent(typeof(LookAtConstraint))]
+[RequireComponent(typeof(RotationConstraint))]
 public class NodeText : MonoBehaviour
 {
     public TMP_Text Text;
     public GameObject Target;
-    [SerializeField] LookAtConstraint constraint;
+    [SerializeField] RotationConstraint constraint;
 
     public void SetText(string text)
     {
@@ -19,14 +19,13 @@ public class NodeText : MonoBehaviour
     public void Start()
     {
         // 常にカメラを向く
-        if (TryGetComponent<LookAtConstraint>(out constraint))
+        if (TryGetComponent<RotationConstraint>(out constraint))
         {
             ConstraintSource source = new ConstraintSource();
             source.sourceTransform = Camera.main.transform;
             source.weight = 1f;
 
             constraint.AddSource(source);
-            constraint.rotationOffset = new Vector3(0, 180, 0);
         }
     }
 }
