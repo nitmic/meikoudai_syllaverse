@@ -6,19 +6,33 @@ using UnityEngine.InputSystem;
 /// <summary>
 /// プレイヤの入力関連
 /// </summary>
-[RequireComponent(typeof(PlayerInput), typeof(Rigidbody))]
+[RequireComponent(typeof(Rigidbody))]
 public class PlayerInputController : MonoBehaviour
 {
     /// <summary>速度</summary>
-    public float speed = 10f;
+    public float speed = 50f;
     [Range(0, 1), SerializeField] float decaySpeed = 0.5f;
     public float DecayRate { get => decaySpeed * Time.deltaTime; }
     const float initJumpDistance = 1f;
     [SerializeField] float jumpDistance = initJumpDistance;
+    /// <summary>
+    /// テキストノード用のレイヤー
+    /// </summary>
+    const int nodeLayer = 6;
     [SerializeField] PlayerInput input;
+    [SerializeField] Camera PlayerCamera;
+    [SerializeField] Camera SphereCamera;
+    [Header("デバッグ用")]
     [SerializeField] new Rigidbody rigidbody;
+    /// <summary>
+    /// カーソル位置
+    /// </summary>
     [SerializeField] Vector2 cursorPosition;
     [SerializeField] Vector3 localMoveDir;
+    /// <summary>
+    /// started時にhitしたCollider
+    /// </summary>
+    [SerializeField] Collider hitCollider;
     private Vector3 Velocity
     {
         get => transform.localToWorldMatrix * localMoveDir * speed;
@@ -47,7 +61,7 @@ public class PlayerInputController : MonoBehaviour
     {
         cursorPosition = new Vector2(Screen.width / 2, Screen.height / 2);
 
-        input = GetComponent<PlayerInput>();
+        //input = GetComponent<PlayerInput>();
         rigidbody = GetComponent<Rigidbody>();
 
         input.actions["Move"].performed += _OnMove;
@@ -55,8 +69,11 @@ public class PlayerInputController : MonoBehaviour
         input.actions["Lift"].performed += _OnLift;
         input.actions["Lift"].canceled += _StopLift;
         input.actions["Look"].performed += _OnLook;
-        input.actions["Fire"].canceled += _Jump;
-        input.actions["Cursor"].performed += _Cursor;
+        input.actions["Jump"].canceled += _Jump;
+        input.actions["Select"].started += _SelectTarget;
+        input.actions["Select"].started += _UpdateCursorPosition;
+        input.actions["Select"].canceled += _SelectAction;
+        input.actions["ToggleSphereMode"].canceled += _ToggleMode;
 
         StartCoroutine(DecayJump());
     }
@@ -103,14 +120,17 @@ public class PlayerInputController : MonoBehaviour
     /// <param name="callback"></param>
     private void _OnLook(InputAction.CallbackContext callback)
     {
+        const float Multiply = 0.5f;
         Vector2 delta = callback.ReadValue<Vector2>();
         // Debug.Log($"Look : delta = {delta}");
 
         // 視点移動
         Vector3 rotate = rigidbody.rotation.eulerAngles;
+        // -90 ~ 270 の範囲で mod 360
         rotate.x = (rotate.x + 90) % 360 - 90;
-        rotate.x = Mathf.Clamp(rotate.x - 0.5f * delta.y, -89.9f, 89.9f);
-        rotate.y += 0.5f * delta.x;
+        // 視点が一回転しないよう制限
+        rotate.x = Mathf.Clamp(rotate.x - Multiply * delta.y, -89.9f, 89.9f);
+        rotate.y += Multiply * delta.x;
 
         rigidbody.rotation = Quaternion.Euler(rotate);
 
@@ -126,14 +146,52 @@ public class PlayerInputController : MonoBehaviour
         Ray screenRay = Camera.main.ScreenPointToRay(cursorPosition);
         rigidbody.position += jumpDistance * screenRay.direction;
         jumpDistance *= 1.2f;
-        Debug.DrawRay(Camera.main.transform.position, Camera.main.transform.forward, Color.blue, 5);
-        Debug.DrawRay(transform.position, screenRay.direction, Color.red, 5);
-        Debug.Log($"dir = {screenRay.direction}\nCdir= {Camera.main.transform.forward}\n{cursorPosition}:({Screen.width}, {Screen.height})");
+        Debug.DrawRay(screenRay.origin, screenRay.direction * jumpDistance, Color.green, 3);
     }
-    private void _Cursor(InputAction.CallbackContext callback)
+    private void _SelectTarget(InputAction.CallbackContext callback)
     {
         cursorPosition = callback.ReadValue<Vector2>();
-        Debug.Log(cursorPosition);
+        Ray screenRay = Camera.main.ScreenPointToRay(cursorPosition);
+
+        // Raycastの結果を保持
+        RaycastHit hit;
+        if (Physics.Raycast(screenRay, out hit, float.MaxValue, 1 << nodeLayer))
+        {
+            hitCollider = hit.collider;
+        }
+
+        Debug.DrawRay(screenRay.origin, screenRay.direction * 30, Color.red, 5);
+    }
+    private void _UpdateCursorPosition(InputAction.CallbackContext callback)
+    {
+        cursorPosition = callback.ReadValue<Vector2>();
+    }
+    private void _SelectAction(InputAction.CallbackContext callback)
+    {
+        Ray screenRay = Camera.main.ScreenPointToRay(cursorPosition);
+        Debug.DrawRay(screenRay.origin, screenRay.direction * 30, Color.blue, 5);
+
+        RaycastHit hit;
+        if (Physics.Raycast(screenRay, out hit, float.MaxValue, 1 << nodeLayer) && hit.collider == hitCollider)
+        {
+            NodeText nodeText;
+            if (hit.collider.TryGetComponent<NodeText>(out nodeText))
+            {
+                int subjectId = nodeText.subjectId;
+                //input.currentActionMap = input.actions.actionMaps[SyllaverseInput.webviewIndex];
+                Application.OpenURL($"{SyllabusURL.viewURL}?id={subjectId}");
+                Debug.Log($"Open \"{SyllabusURL.viewURL}?id={subjectId}\"");
+            }
+        }
+
+        hitCollider = null;
+    }
+    private void _ToggleMode(InputAction.CallbackContext callback)
+    {
+        input.currentActionMap = input.actions.actionMaps[SyllaverseInput.sphereModeIndex];
+        // カメラ切り替え
+        PlayerCamera.enabled = false;
+        SphereCamera.enabled = true;
     }
 
     /// <summary>

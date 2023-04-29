@@ -13,9 +13,10 @@ GameObject:
   - component: {fileID: 2756982389680182034}
   - component: {fileID: 3728586771001209103}
   - component: {fileID: 4106906996004399447}
-  m_Layer: 0
+  - component: {fileID: 5745725108285968420}
+  m_Layer: 6
   m_Name: NodeText (Renderer)
-  m_TagString: Untagged
+  m_TagString: Node
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -38,7 +39,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 15, y: 4}
+  m_SizeDelta: {x: 10, y: 3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &208751039791345227
 MeshRenderer:
@@ -186,9 +187,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1647e6e55d757f74f8590a0d0119e2d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Text: {fileID: 2756982389680182034}
-  Target: {fileID: 0}
+  subjectId: 0
+  TextUi: {fileID: 2756982389680182034}
   constraint: {fileID: 4106906996004399447}
+  collider: {fileID: 5745725108285968420}
+  rect: {fileID: 6607093086283691692}
 --- !u!1818360609 &4106906996004399447
 RotationConstraint:
   m_ObjectHideFlags: 0
@@ -206,3 +209,16 @@ RotationConstraint:
   m_IsContraintActive: 1
   m_IsLocked: 0
   m_Sources: []
+--- !u!65 &5745725108285968420
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1291640143097275437}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 0.1}
+  m_Center: {x: 0, y: 0, z: 0}

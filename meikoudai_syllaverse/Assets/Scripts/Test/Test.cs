@@ -1,4 +1,4 @@
-using System.Collections;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using Suggest;
@@ -81,12 +81,26 @@ public class Test : MonoBehaviour
 
 
         // テキストの配置
-        foreach ((int key, Subject sub) in Subjects)
+        // Selectでイテレータiを取得
+        foreach ((int i, int key, Subject sub) in Subjects.Select((item, index)=>(index, item.Key, item.Value)))
         {
             Vector3 position = Vector3.Scale(TimeTableExporter.SyllabusFeature[key], worldSize);
+
+            // ゲームオブジェクトの生成
             GameObject go = Instantiate(prefab, position, Quaternion.identity);
             go.name = $"{sub.name}({key})";
-            go.GetComponent<NodeText>().SetText(sub.name);
+
+            // NodeTextコンポーネントの初期化
+            NodeText nodeText = go.GetComponent<NodeText>();
+            nodeText.Text = sub.name;
+            nodeText.subjectId = sub.id;
+
+            // 1フレームごとにSTEPの数だけ生成
+            const int STEP = 10;
+            if (i % STEP == 0)
+            {
+                await UniTask.Yield();
+            }
         }
 
         debugText.text = "";
