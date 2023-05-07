@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Animations;
 using UnityEngine.InputSystem;
 
 /// <summary>
@@ -18,10 +19,8 @@ public class PlayerInputController : MonoBehaviour
     /// <summary>
     /// テキストノード用のレイヤー
     /// </summary>
-    const int nodeLayer = 6;
     [SerializeField] PlayerInput input;
-    [SerializeField] Camera PlayerCamera;
-    [SerializeField] Camera SphereCamera;
+    [SerializeField] Camera mainCamera;
     [Header("デバッグ用")]
     [SerializeField] new Rigidbody rigidbody;
     /// <summary>
@@ -32,7 +31,6 @@ public class PlayerInputController : MonoBehaviour
     /// <summary>
     /// started時にhitしたCollider
     /// </summary>
-    [SerializeField] Collider hitCollider;
     private Vector3 Velocity
     {
         get => transform.localToWorldMatrix * localMoveDir * speed;
@@ -63,6 +61,7 @@ public class PlayerInputController : MonoBehaviour
 
         //input = GetComponent<PlayerInput>();
         rigidbody = GetComponent<Rigidbody>();
+        mainCamera = Camera.main;
 
         input.actions["Move"].performed += _OnMove;
         input.actions["Move"].canceled += Stop;
@@ -70,9 +69,6 @@ public class PlayerInputController : MonoBehaviour
         input.actions["Lift"].canceled += _StopLift;
         input.actions["Look"].performed += _OnLook;
         input.actions["Jump"].canceled += _Jump;
-        input.actions["Select"].started += _SelectTarget;
-        input.actions["Select"].started += _UpdateCursorPosition;
-        input.actions["Select"].canceled += _SelectAction;
         input.actions["ToggleSphereMode"].canceled += _ToggleMode;
 
         StartCoroutine(DecayJump());
@@ -143,55 +139,60 @@ public class PlayerInputController : MonoBehaviour
     /// <param name="callback"></param>
     private void _Jump(InputAction.CallbackContext callback)
     {
-        Ray screenRay = Camera.main.ScreenPointToRay(cursorPosition);
+        Ray screenRay = mainCamera.ScreenPointToRay(cursorPosition);
         rigidbody.position += jumpDistance * screenRay.direction;
         jumpDistance *= 1.2f;
         Debug.DrawRay(screenRay.origin, screenRay.direction * jumpDistance, Color.green, 3);
     }
-    private void _SelectTarget(InputAction.CallbackContext callback)
-    {
-        cursorPosition = callback.ReadValue<Vector2>();
-        Ray screenRay = Camera.main.ScreenPointToRay(cursorPosition);
-
-        // Raycastの結果を保持
-        RaycastHit hit;
-        if (Physics.Raycast(screenRay, out hit, float.MaxValue, 1 << nodeLayer))
-        {
-            hitCollider = hit.collider;
-        }
-
-        Debug.DrawRay(screenRay.origin, screenRay.direction * 30, Color.red, 5);
-    }
-    private void _UpdateCursorPosition(InputAction.CallbackContext callback)
-    {
-        cursorPosition = callback.ReadValue<Vector2>();
-    }
-    private void _SelectAction(InputAction.CallbackContext callback)
-    {
-        Ray screenRay = Camera.main.ScreenPointToRay(cursorPosition);
-        Debug.DrawRay(screenRay.origin, screenRay.direction * 30, Color.blue, 5);
-
-        RaycastHit hit;
-        if (Physics.Raycast(screenRay, out hit, float.MaxValue, 1 << nodeLayer) && hit.collider == hitCollider)
-        {
-            NodeText nodeText;
-            if (hit.collider.TryGetComponent<NodeText>(out nodeText))
-            {
-                int subjectId = nodeText.subjectId;
-                //input.currentActionMap = input.actions.actionMaps[SyllaverseInput.webviewIndex];
-                Application.OpenURL($"{SyllabusURL.viewURL}?id={subjectId}");
-                Debug.Log($"Open \"{SyllabusURL.viewURL}?id={subjectId}\"");
-            }
-        }
-
-        hitCollider = null;
-    }
     private void _ToggleMode(InputAction.CallbackContext callback)
     {
-        input.currentActionMap = input.actions.actionMaps[SyllaverseInput.sphereModeIndex];
+        input.currentActionMap = input.actions.actionMaps[SyllaverseInput.MapIndex.Sphere];
+
         // カメラ切り替え
-        PlayerCamera.enabled = false;
-        SphereCamera.enabled = true;
+        var sources = new List<ConstraintSource>();
+        // カメラの回転をSphereマーカーに追従
+        RotationConstraint rotation;
+        if (mainCamera.TryGetComponent(out rotation))
+        {
+            rotation.GetSources(sources);
+            // 全ての重みを0に
+            for (int i = 0; i < sources.Count; i++)
+            {
+                ConstraintSource item = sources[i];
+                item.weight = 0;
+                sources[i] = item;
+            }
+
+            // Sphereの重みを1に
+            ConstraintSource sphere = sources[SyllaverseInput.Marker.Sphere];
+            sphere.weight = 1;
+            sources[SyllaverseInput.Marker.Sphere] = sphere;
+
+            rotation.SetSources(sources);
+            sources.Clear();
+        }
+
+        // カメラの位置をSphereマーカーに追従
+        PositionConstraint position;
+        if (mainCamera.TryGetComponent(out position))
+        {
+            position.GetSources(sources);
+            // 全ての重みを0に
+            for (int i = 0; i < sources.Count; i++)
+            {
+                ConstraintSource item = sources[i];
+                item.weight = 0;
+                sources[i] = item;
+            }
+
+            // Sphereの重みを1に
+            ConstraintSource sphere = sources[SyllaverseInput.Marker.Sphere];
+            sphere.weight = 1;
+            sources[SyllaverseInput.Marker.Sphere] = sphere;
+
+            position.SetSources(sources);
+            sources.Clear();
+        }
     }
 
     /// <summary>

@@ -82,7 +82,7 @@ public class Test : MonoBehaviour
 
         // テキストの配置
         // Selectでイテレータiを取得
-        foreach ((int i, int key, Subject sub) in Subjects.Select((item, index)=>(index, item.Key, item.Value)))
+        foreach ((int i, int key, Subject sub) in Subjects.Select((item, index) => (index, item.Key, item.Value)))
         {
             Vector3 position = Vector3.Scale(TimeTableExporter.SyllabusFeature[key], worldSize);
 
@@ -99,6 +99,7 @@ public class Test : MonoBehaviour
             const int STEP = 10;
             if (i % STEP == 0)
             {
+                debugText.text = $"Now Loading ... ({(int)Mathf.Lerp(75, 100, (float)i / Subjects.Count)}%)";
                 await UniTask.Yield();
             }
         }

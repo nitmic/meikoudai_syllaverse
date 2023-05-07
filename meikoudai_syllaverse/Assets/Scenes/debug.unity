@@ -389,7 +389,7 @@ GameObject:
   - component: {fileID: 562818467}
   - component: {fileID: 562818466}
   - component: {fileID: 562818465}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -749,10 +749,13 @@ MonoBehaviour:
   speed: 10
   decaySpeed: 0.5
   jumpDistance: 1
-  input: {fileID: 0}
+  input: {fileID: 1233873340}
+  PlayerCamera: {fileID: 0}
+  SphereCamera: {fileID: 0}
   rigidbody: {fileID: 0}
   cursorPosition: {x: 1285, y: 357}
   localMoveDir: {x: 0, y: 0, z: 0}
+  hitCollider: {fileID: 0}
 --- !u!54 &1233873339
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -796,7 +799,7 @@ MonoBehaviour:
   m_ActionEvents: []
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
-  m_DefaultActionMap: Player
+  m_DefaultActionMap: PlayerMode
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 306165207}
 --- !u!65 &1233873341

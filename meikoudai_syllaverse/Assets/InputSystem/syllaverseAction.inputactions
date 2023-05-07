@@ -42,7 +42,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Select",
+                    "name": "Select [P]",
                     "type": "Value",
                     "id": "078a7ce2-d4ec-41a6-9a83-3030dcd6d2cb",
                     "expectedControlType": "Vector2",
@@ -273,8 +273,8 @@
                 {
                     "name": "",
                     "id": "886e731e-7071-4ae4-95c0-e61739dad6fd",
-                    "path": "<Touchscreen>/touch*/Press",
-                    "interactions": "",
+                    "path": "<Touchscreen>/primaryTouch/press",
+                    "interactions": "MultiTap",
                     "processors": "",
                     "groups": ";Touch",
                     "action": "Jump",
@@ -337,13 +337,13 @@
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "Tap [Pointer]",
+                    "name": "Tap/Click [Pointer]",
                     "id": "73be7b54-a9ad-429a-b1d2-40c01967ed9d",
                     "path": "OneModifier",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Select",
+                    "action": "Select [P]",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -354,7 +354,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse;Touch",
-                    "action": "Select",
+                    "action": "Select [P]",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -365,7 +365,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Touch;Keyboard&Mouse",
-                    "action": "Select",
+                    "action": "Select [P]",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -379,6 +379,39 @@
                     "action": "ToggleSphereMode",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "Multi Tap",
+                    "id": "74a06dfb-1e46-4008-a34f-2429826b6535",
+                    "path": "OneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ToggleSphereMode",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "e6600837-ec76-49e8-9ff9-77200cc93b5a",
+                    "path": "<Touchscreen>/touch0/tap",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Touch",
+                    "action": "ToggleSphereMode",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "binding",
+                    "id": "7b86f6e5-62ba-4f04-baa7-8211a80a5dfd",
+                    "path": "<Touchscreen>/touch1/tap",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Touch",
+                    "action": "ToggleSphereMode",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 }
             ]
         },
@@ -969,6 +1002,15 @@
                     "initialStateCheck": true
                 },
                 {
+                    "name": "Select [S]",
+                    "type": "Value",
+                    "id": "3c254b16-fbf0-4a12-9c85-593bfa80b459",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
                     "name": "TogglePlayerMode",
                     "type": "Button",
                     "id": "0314034d-f79c-47bf-95f7-3b5e7b167e0e",
@@ -976,24 +1018,6 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
-                },
-                {
-                    "name": "Select",
-                    "type": "Button",
-                    "id": "3c254b16-fbf0-4a12-9c85-593bfa80b459",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "New action",
-                    "type": "Value",
-                    "id": "bb199886-415d-4e68-83b2-09065c6604fe",
-                    "expectedControlType": "Vector2",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -1064,6 +1088,105 @@
                     "isPartOfComposite": false
                 },
                 {
+                    "name": "Pinch Composite",
+                    "id": "5440d633-a9d8-40fe-82bc-bb4f51452b9a",
+                    "path": "PinchComposite",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Zoom",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "touch0",
+                    "id": "ac8790d1-3399-4ac3-8aa0-a57d37ab1c2b",
+                    "path": "<Touchscreen>/touch0",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Touch",
+                    "action": "Zoom",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "touch1",
+                    "id": "18862316-ae79-47eb-9a5a-5183bb669a66",
+                    "path": "<Touchscreen>/touch1",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Touch",
+                    "action": "Zoom",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "Tap [Touch Screen]",
+                    "id": "57eeba9d-a09b-45f4-9fb8-411f3d7759a6",
+                    "path": "OneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Select [S]",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "e7be6033-088a-4ea0-8deb-17773f0fbacd",
+                    "path": "<Touchscreen>/Press",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Touch",
+                    "action": "Select [S]",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "binding",
+                    "id": "2fb69b71-16b8-4eac-a6b3-a20685bd8125",
+                    "path": "<Touchscreen>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Touch",
+                    "action": "Select [S]",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "Click [Pointer]",
+                    "id": "f5353859-e694-477f-be9e-36791fb8128f",
+                    "path": "OneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Select [S]",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "c137d84b-f816-4820-8a71-fe38be92a338",
+                    "path": "<Pointer>/press",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Select [S]",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "binding",
+                    "id": "1fae16ac-5537-436a-a207-c83dd902b8a5",
+                    "path": "<Pointer>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Select [S]",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
                     "name": "",
                     "id": "74b465d7-b89d-4673-bead-0811ebc308a0",
                     "path": "<Mouse>/rightButton",
@@ -1075,26 +1198,37 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "",
-                    "id": "991b4bbe-f13c-41e8-826a-468cf0167976",
-                    "path": "<Mouse>/leftButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard&Mouse",
-                    "action": "Select",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "fdb3039b-037a-4fcb-ab10-2dd0b8a6248a",
-                    "path": "",
+                    "name": "Double Tap",
+                    "id": "bb95160a-66c1-4785-a7ba-99797cf08f89",
+                    "path": "OneModifier",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "New action",
-                    "isComposite": false,
+                    "action": "TogglePlayerMode",
+                    "isComposite": true,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "3c08f986-4382-4941-befe-3d9ec1cced7a",
+                    "path": "<Touchscreen>/touch0/tap",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Touch",
+                    "action": "TogglePlayerMode",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "binding",
+                    "id": "63809adb-515b-4c32-86eb-10210e8773aa",
+                    "path": "<Touchscreen>/touch1/tap",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Touch",
+                    "action": "TogglePlayerMode",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 }
             ]
         }
