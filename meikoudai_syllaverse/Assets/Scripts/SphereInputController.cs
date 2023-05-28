@@ -7,7 +7,6 @@ public class SphereInputController : MonoBehaviour
 {
     public float rotateMultiply = 2;
     public float zoomMultiply = 2;
-    public float scrollClamp = 10;
     [SerializeField] PlayerInput input;
     [SerializeField] Camera mainCamera;
 
@@ -17,7 +16,7 @@ public class SphereInputController : MonoBehaviour
 
         input.actions["Rotate"].performed += _Rotate;
         input.actions["Zoom"].performed += _Zoom;
-        input.actions["TogglePlayerMode"].started += _ToggleMode;
+        input.actions["TogglePlayerMode"].performed += _ToggleMode;
     }
 
     void _Rotate(InputAction.CallbackContext callback)
@@ -38,7 +37,7 @@ public class SphereInputController : MonoBehaviour
     {
         const float WorldSize = 1000f;
         // 拡大率
-        float magnification = zoomMultiply * scrollClamp * Mathf.Clamp01(callback.ReadValue<float>() / scrollClamp);
+        float magnification = zoomMultiply * callback.ReadValue<float>();
         transform.localScale = Vector3.Lerp(Vector3.one, WorldSize * Vector3.one, (transform.localScale.x + magnification) / WorldSize);
 
         Debug.Log($"scroll : {callback.ReadValue<float>()}\nmagnification : {magnification}");
@@ -90,7 +89,10 @@ public class SphereInputController : MonoBehaviour
             sources[SyllaverseInput.Marker.Player] = player;
 
             position.SetSources(sources);
-            sources.Clear();
+            //sources.Clear();
         }
+
+        DebugText.Log($"Toggle end. Map = {input.currentActionMap.name}");
+        DebugText.Log($"{sources[0].sourceTransform.name} = {sources[0].weight}, {sources[1].sourceTransform.name} = {sources[1].weight}");
     }
 }

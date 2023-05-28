@@ -33,7 +33,7 @@ public class PlayerInputController : MonoBehaviour
     /// </summary>
     private Vector3 Velocity
     {
-        get => transform.localToWorldMatrix * localMoveDir * speed;
+        get => transform.localToWorldMatrix * localMoveDir.normalized * speed;
     }
     /// <summary>
     /// XZ平面の移動方向
@@ -65,11 +65,12 @@ public class PlayerInputController : MonoBehaviour
 
         input.actions["Move"].performed += _OnMove;
         input.actions["Move"].canceled += Stop;
+        input.actions["Move Pinch"].performed += _OnMove;
         input.actions["Lift"].performed += _OnLift;
         input.actions["Lift"].canceled += _StopLift;
         input.actions["Look"].performed += _OnLook;
-        input.actions["Jump"].canceled += _Jump;
-        input.actions["ToggleSphereMode"].canceled += _ToggleMode;
+        input.actions["Jump"].performed += _Jump;
+        input.actions["ToggleSphereMode"].performed += _ToggleMode;
 
         StartCoroutine(DecayJump());
     }
@@ -81,12 +82,20 @@ public class PlayerInputController : MonoBehaviour
 
         rigidbody.velocity = Velocity;
     }
-
     private void Stop(InputAction.CallbackContext callback)
     {
         HorizontalDir = Vector2.zero;
 
         rigidbody.velocity = Velocity;
+    }
+
+    /// <summary>
+    /// タッチスクリーンによるピンチインの移動
+    /// </summary>
+    private void _OnMovePinch(InputAction.CallbackContext callback)
+    {
+        float pinchDelta = callback.ReadValue<float>();
+        rigidbody.position += pinchDelta * transform.forward;
     }
 
     /// <summary>
@@ -146,14 +155,19 @@ public class PlayerInputController : MonoBehaviour
     }
     private void _ToggleMode(InputAction.CallbackContext callback)
     {
+        DebugText.Log("Toggle");
+
+        // アクションマップの切り替え
         input.currentActionMap = input.actions.actionMaps[SyllaverseInput.MapIndex.Sphere];
 
         // カメラ切り替え
         var sources = new List<ConstraintSource>();
+
         // カメラの回転をSphereマーカーに追従
         RotationConstraint rotation;
-        if (mainCamera.TryGetComponent(out rotation))
+        if (mainCamera.TryGetComponent<RotationConstraint>(out rotation))
         {
+            // 重みリストの取得
             rotation.GetSources(sources);
             // 全ての重みを0に
             for (int i = 0; i < sources.Count; i++)
@@ -176,6 +190,7 @@ public class PlayerInputController : MonoBehaviour
         PositionConstraint position;
         if (mainCamera.TryGetComponent(out position))
         {
+            // 重みリストを取得
             position.GetSources(sources);
             // 全ての重みを0に
             for (int i = 0; i < sources.Count; i++)
@@ -191,8 +206,11 @@ public class PlayerInputController : MonoBehaviour
             sources[SyllaverseInput.Marker.Sphere] = sphere;
 
             position.SetSources(sources);
-            sources.Clear();
+            //sources.Clear();
         }
+
+        DebugText.Log($"Toggle end. Map = {input.currentActionMap.name}");
+        DebugText.Log($"{sources[0].sourceTransform.name} = {sources[0].weight}, {sources[1].sourceTransform.name} = {sources[1].weight}");
     }
 
     /// <summary>

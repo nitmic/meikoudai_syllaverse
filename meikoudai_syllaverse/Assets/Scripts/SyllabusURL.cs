@@ -12,7 +12,6 @@ public class SyllabusURL : MonoBehaviour
     /// </summary>
     public static string searchURL { get; private set; }
     public static string viewURL { get; private set; }
-    [SerializeField] TMPro.TMP_Text textUi;
 
 
     // Start is called before the first frame update
@@ -24,19 +23,12 @@ public class SyllabusURL : MonoBehaviour
         }
         catch (System.Exception e)
         {
-            if (textUi is not null)
-            {
-                textUi.text += e.ToString();
-            }
+            DebugText.Log(e.ToString());
             throw e;
         }
 
         Debug.Log($"searchURL:{searchURL}\nviewURL:{viewURL}");
-
-        if (textUi is not null)
-        {
-            textUi.text += $"\nsearchURL:{searchURL}\nviewURL:{viewURL}\n";
-        }
+        DebugText.Log($"\nsearchURL:{searchURL}\nviewURL:{viewURL}\n");
 
         Destroy(this.gameObject);
     }

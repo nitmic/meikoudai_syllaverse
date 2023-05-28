@@ -26,8 +26,8 @@ public class SyllabusOpenInputController : MonoBehaviour
 
         input.actions["Select [P]"].started += _SelectTarget;
         input.actions["Select [S]"].started += _SelectTarget;
-        input.actions["Select [P]"].started += _UpdateCursorPosition;
-        input.actions["Select [S]"].started += _UpdateCursorPosition;
+        input.actions["Select [P]"].performed += _UpdateCursorPosition;
+        input.actions["Select [S]"].performed += _UpdateCursorPosition;
         input.actions["Select [P]"].canceled += _SelectAction;
         input.actions["Select [S]"].canceled += _SelectAction;
     }
@@ -45,6 +45,8 @@ public class SyllabusOpenInputController : MonoBehaviour
         }
 
         Debug.DrawRay(screenRay.origin, screenRay.direction * 30, Color.red, 5);
+        DebugText.Log("Select (started)\n");
+        DebugText.Log($"hitCOllider = {hitCollider?.name} \t[origin = {screenRay.origin}, direction = {screenRay.direction}]");
     }
     private void _UpdateCursorPosition(InputAction.CallbackContext callback)
     {
@@ -65,11 +67,14 @@ public class SyllabusOpenInputController : MonoBehaviour
                 int subjectId = nodeText.subjectId;
                 //input.currentActionMap = input.actions.actionMaps[SyllaverseInput.webviewIndex];
                 Application.OpenURL($"{SyllabusURL.viewURL}?id={subjectId}");
+                
                 Debug.Log($"Open \"{SyllabusURL.viewURL}?id={subjectId}\"");
+                DebugText.Log($"Open \"{SyllabusURL.viewURL}?id={subjectId}\"");
             }
         }
 
         hitCollider = null;
+        DebugText.Log("Select (canceled)\n");
     }
 
 }
