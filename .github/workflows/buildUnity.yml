@@ -2,6 +2,9 @@ name: Run the WebGL build
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - 'main'
 
 env:
   projectPath: meikoudai_syllaverse
@@ -26,7 +29,7 @@ jobs:
         with:
           # 今回は WebGL ビルドを行いたいため WebGL を指定する
           targetPlatform: WebGL
-          unityVersion: 2021.2.17f1
+          unityVersion: ${{ vars.UNITY_VERSION }}
           projectPath: ${{ env.projectPath }}
           buildsPath: ${{ env.buildPath }}
 
