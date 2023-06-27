@@ -13,7 +13,7 @@ PlayerSettings:
   useOnDemandResources: 0
   accelerometerFrequency: 60
   companyName: DefaultCompany
-  productName: meikoudai_syllaverse
+  productName: "\u540D\u5DE5\u5927\u30B7\u30E9\u30D0\u30FC\u30B9 meikoudai_syllaverse"
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.13725491, g: 0.12156863, b: 0.1254902, a: 1}
@@ -701,7 +701,7 @@ PlayerSettings:
   webGLThreadsSupport: 0
   webGLDecompressionFallback: 1
   scriptingDefineSymbols:
-    WebGL: ZIP_AVAILABLE;NUGET_PACKAGE_READY
+    WebGL: ZIP_AVAILABLE
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend: {}
