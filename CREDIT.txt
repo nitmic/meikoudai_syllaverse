@@ -1,0 +1,20 @@
+======================================================================
+sentence_transformers
+Copyright 2019 Nils Reimers
+Copyright 2020 sonoisa
+======================================================================
+UniTask
+Copyright (c) 2019 Yoshifumi Kawai / Cysharp, Inc.
+======================================================================
+NuGet-importer-for-Unity
+Copyright 2021 kumaS-nu
+======================================================================
+CsvHelper
+Copyright JoshClose
+======================================================================
+Microsoft.Bcl.AsyncInterfaces
+Copyright (c) .NET Foundation and Contributors
+======================================================================
+Microsoft.Bcl.HashCode
+Copyright (c) .NET Foundation and Contributors
+======================================================================
