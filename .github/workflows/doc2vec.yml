@@ -1,10 +1,10 @@
-name: Embedding with doc2vec
+name: Embedding
 
 on: 
   workflow_dispatch:
 
 jobs:
-  doc2vec:
+  embedding:
     runs-on: ubuntu-latest
     steps:
       # 自リポジトリのチェックアウト
@@ -44,7 +44,7 @@ jobs:
       - name: run
         run: |
           mkdir -p meikoudai_syllaverse/Assets/StreamingAssets/csv
-          python syllabus_analysis/doc2vec.py Temp/artifact meikoudai_syllaverse/Assets/StreamingAssets/csv/feature.csv
+          python syllabus_analysis/embedding.py Temp/artifact meikoudai_syllaverse/Assets/StreamingAssets/csv/feature.csv
 
       # push
       - name: git config

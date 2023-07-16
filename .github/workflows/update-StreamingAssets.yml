@@ -103,7 +103,7 @@ jobs:
           path: ${{ env.unityProjectPath }}/Assets/StreamingAssets/xml
 
           
-  doc2vec:
+  embedding:
     needs: scraping-syllabus
     runs-on: ubuntu-latest
     steps:
@@ -131,19 +131,11 @@ jobs:
         run: pip install -r requirements.txt
 
       # CSVファイルの出力
-      # モデルのダウンロード
-      - name: model download
-        run: |
-          sudo apt install aria2
-          mkdir -p ${{ env.modelFolder }}
-          aria2c -x5 -o ${{ env.modelFolder }}/jawiki.doc2vec.dmpv300d.tar.bz2 https://www.dropbox.com/s/raw/njez3f1pjv9i9xj/jawiki.doc2vec.dmpv300d.tar.bz2
-          bzip2 -d ${{ env.modelFolder }}/jawiki.doc2vec.dmpv300d.tar.bz2
-          tar -xvf ${{ env.modelFolder }}/jawiki.doc2vec.dmpv300d.tar -C ${{ env.modelFolder }}
       # Pythonスクリプト実行
       - name: run
         run: |
           mkdir -p ${{ env.unityProjectPath }}/Assets/StreamingAssets/csv
-          python syllabus_analysis/doc2vec.py ${{ env.modelFolder }}/jawiki.doc2vec.dmpv300d.model ${{ env.phpFolder }} ${{ env.unityProjectPath }}/Assets/StreamingAssets/csv/feature.csv
+          python syllabus_analysis/embedding.py ${{ env.phpFolder }} ${{ env.unityProjectPath }}/Assets/StreamingAssets/csv/feature.csv
 
         # アーティファクトのアップロード
       - uses: actions/upload-artifact@v3
@@ -153,7 +145,7 @@ jobs:
 
 
   commit-push:
-    needs: [generate-xml, doc2vec]
+    needs: [generate-xml, embedding]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3

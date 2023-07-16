@@ -11,7 +11,7 @@ debug = False
 def argument():
     """引数"""
     parser = ArgumentParser()
-    parser.add_argument("-m", "modelPath", default=Path("sonoisa/sentence-bert-base-ja-mean-tokens-v2"), type=Path)
+    parser.add_argument("-m", "--modelPath", default=Path("sonoisa/sentence-bert-base-ja-mean-tokens-v2"), type=Path)
     parser.add_argument("phpDir", type=Path)
     parser.add_argument("outCsvPath", type=Path)
     args = dict(vars(parser.parse_args()))
@@ -50,7 +50,7 @@ def readFile(path : Path)-> str:
 
     return ' '.join(sentence)
 
-def Docs2Vectors300d(model, phpDir:Path):
+def Docs2Vectors(model, phpDir:Path):
     """
     シラバスファイルから埋め込みベクトルに変換する．
     """
@@ -99,7 +99,7 @@ def vector2vector3d(docVec:pd.DataFrame):
 if __name__ == "__main__":
     args = argument()
     model = modelLoad(args["modelPath"])
-    df_feature = Docs2Vectors300d(model, args["phpDir"])
+    df_feature = Docs2Vectors(model, args["phpDir"])
     df_pc = vector2vector3d(df_feature)
     df_pc.to_csv(args["outCsvPath"])
 
