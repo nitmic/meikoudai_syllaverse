@@ -27,7 +27,7 @@ def modelLoad(modelPath = Path("sonoisa/sentence-bert-base-ja-mean-tokens-v2")):
         (https://creativecommons.org/licenses/by-sa/4.0/legalcode)
     - https://huggingface.co/sonoisa/sentence-bert-base-ja-mean-tokens-v2
     """
-    model = SentenceTransformer(modelPath)
+    model = SentenceTransformer(str(modelPath))
     return model
 
 def readFile(path : Path)-> str:
