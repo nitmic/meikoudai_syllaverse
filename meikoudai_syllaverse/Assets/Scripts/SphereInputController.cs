@@ -16,7 +16,7 @@ public class SphereInputController : MonoBehaviour
 
         input.actions["Rotate"].performed += _Rotate;
         input.actions["Zoom"].performed += _Zoom;
-        input.actions["TogglePlayerMode"].performed += _ToggleMode;
+        input.actions["TogglePlayerMode"].performed += ToggleMode;
     }
 
     void _Rotate(InputAction.CallbackContext callback)
@@ -42,7 +42,11 @@ public class SphereInputController : MonoBehaviour
 
         Debug.Log($"scroll : {callback.ReadValue<float>()}\nmagnification : {magnification}");
     }
-    void _ToggleMode(InputAction.CallbackContext callback)
+    void ToggleMode(InputAction.CallbackContext callback)
+    {
+        ToggleMode();
+    }
+    public void ToggleMode()
     {
         input.currentActionMap = input.actions.actionMaps[SyllaverseInput.MapIndex.Player];
 

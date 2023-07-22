@@ -8,7 +8,7 @@ public class DebugText : MonoBehaviour
 {
     static DebugText instance;
     [SerializeField] TMP_Text textUi;
-    [SerializeField] StringBuilder builder;
+    [SerializeField] StringBuilder builder = new StringBuilder();
     public static DebugText Instance { get => instance; }
     static TMP_Text TextUi { get => instance.textUi; }
     static StringBuilder Builder { get => instance.builder; }
@@ -23,16 +23,16 @@ public class DebugText : MonoBehaviour
         {
             Destroy(this);
         }
-
-        builder = new StringBuilder();
+        
+        if (!TryGetComponent<TMP_Text>(out textUi))
+        {
+            textUi = gameObject.AddComponent<TMP_Text>();
+        }
     }
 
     private void Start()
     {
-        if (TryGetComponent<TMP_Text>(out textUi))
-        {
-            builder.Append(textUi.text);
-        }
+        builder.Append(textUi.text);
     }
 
     public static void Log(string text)

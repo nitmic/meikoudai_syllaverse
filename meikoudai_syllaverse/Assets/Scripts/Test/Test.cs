@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using Suggest;
 using Cysharp.Threading.Tasks;
-using TMPro;
 
 public class Test : MonoBehaviour
 {
@@ -13,7 +12,6 @@ public class Test : MonoBehaviour
     IReadOnlyDictionary<int, Subject> Subjects { get => TimeTableExporter.Syllabus; }
     HalfSubjects[] halfSubjects = new HalfSubjects[8];
 
-    public TextMeshProUGUI debugText;
 
     void Start()
     {
@@ -22,7 +20,6 @@ public class Test : MonoBehaviour
 
     async UniTask GenerateCoroutine()
     {
-        debugText.text = "Now Loading ... (0%)";
 
         // XMLをロード
         try
@@ -32,21 +29,14 @@ public class Test : MonoBehaviour
         catch (System.Exception e)
         {
             // 例外の時はUIに表示
-            debugText.text += "\n" + e.ToString();
+            DebugText.Log(e.ToString());
             throw e;
         }
-
-        debugText.text = "Now Loading ... (25%)";
-        await UniTask.Yield();
 
         for (int i = 0; i < 8; i++)
         {
             halfSubjects[i] = new HalfSubjects();
         }
-        // 
-
-        debugText.text = "Now Loading ... (50%)";
-        await UniTask.Yield();
 
         foreach (KeyValuePair<int, Subject> item in Subjects)
         {
@@ -76,7 +66,6 @@ public class Test : MonoBehaviour
             // Debug.Log(item.Key + ":" + item.Value.department[0]);   
         }
 
-        debugText.text = "Now Loading ... (75%)";
         await UniTask.Yield();
 
 
@@ -96,15 +85,12 @@ public class Test : MonoBehaviour
             nodeText.subjectId = sub.id;
 
             // 1フレームごとにSTEPの数だけ生成
-            const int STEP = 10;
+            const int STEP = 30;
             if (i % STEP == 0)
             {
-                debugText.text = $"Now Loading ... ({(int)Mathf.Lerp(75, 100, (float)i / Subjects.Count)}%)";
                 await UniTask.Yield();
             }
         }
-
-        debugText.text = "";
     }
 }
 

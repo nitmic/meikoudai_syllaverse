@@ -70,7 +70,7 @@ public class PlayerInputController : MonoBehaviour
         input.actions["Lift"].canceled += _StopLift;
         input.actions["Look"].performed += _OnLook;
         input.actions["Jump"].performed += _Jump;
-        input.actions["ToggleSphereMode"].performed += _ToggleMode;
+        input.actions["ToggleSphereMode"].performed += ToggleMode;
 
         StartCoroutine(DecayJump());
     }
@@ -153,7 +153,11 @@ public class PlayerInputController : MonoBehaviour
         jumpDistance *= 1.2f;
         Debug.DrawRay(screenRay.origin, screenRay.direction * jumpDistance, Color.green, 3);
     }
-    private void _ToggleMode(InputAction.CallbackContext callback)
+    private void ToggleMode(InputAction.CallbackContext callback)
+    {
+        ToggleMode();
+    }
+    public void ToggleMode()
     {
         DebugText.Log("Toggle");
 

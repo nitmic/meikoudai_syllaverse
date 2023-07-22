@@ -46,7 +46,7 @@ public class SyllabusOpenInputController : MonoBehaviour
 
         Debug.DrawRay(screenRay.origin, screenRay.direction * 30, Color.red, 5);
         DebugText.Log("Select (started)\n");
-        DebugText.Log($"hitCOllider = {hitCollider?.name} \t[origin = {screenRay.origin}, direction = {screenRay.direction}]");
+        DebugText.Log($"hitCOllider = {(hitCollider == null? null : hitCollider.name)} \t[origin = {screenRay.origin}, direction = {screenRay.direction}]");
     }
     private void _UpdateCursorPosition(InputAction.CallbackContext callback)
     {
