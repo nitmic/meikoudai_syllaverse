@@ -51,5 +51,15 @@
         "meikoudai_syllaverse/ProjectSettings/":true,
         "meikoudai_syllaverse/temp/":true,
         "meikoudai_syllaverse/Temp/":true
-    }
+    },
+    "cSpell.words": [
+        "Behaviour",
+        "Cysharp",
+        "Lerp",
+        "Mathf",
+        "Raycast",
+        "Rigidbody",
+        "Syllaverse",
+        "UGUI"
+    ]
 }
