@@ -16,7 +16,6 @@ public class SphereInputController : MonoBehaviour
 
         input.actions["Rotate"].performed += _Rotate;
         input.actions["Zoom"].performed += _Zoom;
-        input.actions["TogglePlayerMode"].performed += ToggleMode;
     }
 
     void _Rotate(InputAction.CallbackContext callback)
@@ -41,62 +40,5 @@ public class SphereInputController : MonoBehaviour
         transform.localScale = Vector3.Lerp(Vector3.one, WorldSize * Vector3.one, (transform.localScale.x + magnification) / WorldSize);
 
         Debug.Log($"scroll : {callback.ReadValue<float>()}\nmagnification : {magnification}");
-    }
-    void ToggleMode(InputAction.CallbackContext callback)
-    {
-        ToggleMode();
-    }
-    public void ToggleMode()
-    {
-        input.currentActionMap = input.actions.actionMaps[SyllaverseInput.MapIndex.Player];
-
-        // カメラ切り替え
-        var sources = new List<ConstraintSource>();
-        // カメラの回転をPlayerマーカーに追従
-        RotationConstraint rotation;
-        if (mainCamera.TryGetComponent(out rotation))
-        {
-            rotation.GetSources(sources);
-            // 全ての重みを0に
-            for (int i = 0; i < sources.Count; i++)
-            {
-                ConstraintSource item = sources[i];
-                item.weight = 0;
-                sources[i] = item;
-            }
-
-            // Playerの重みを1に
-            ConstraintSource player = sources[SyllaverseInput.Marker.Player];
-            player.weight = 1;
-            sources[SyllaverseInput.Marker.Player] = player;
-
-            rotation.SetSources(sources);
-            sources.Clear();
-        }
-
-        // カメラの位置をSphereマーカーに追従
-        PositionConstraint position;
-        if (mainCamera.TryGetComponent(out position))
-        {
-            position.GetSources(sources);
-            // 全ての重みを0に
-            for (int i = 0; i < sources.Count; i++)
-            {
-                ConstraintSource item = sources[i];
-                item.weight = 0;
-                sources[i] = item;
-            }
-
-            // Sphereの重みを1に
-            ConstraintSource player = sources[SyllaverseInput.Marker.Player];
-            player.weight = 1;
-            sources[SyllaverseInput.Marker.Player] = player;
-
-            position.SetSources(sources);
-            //sources.Clear();
-        }
-
-        DebugText.Log($"Toggle end. Map = {input.currentActionMap.name}");
-        DebugText.Log($"{sources[0].sourceTransform.name} = {sources[0].weight}, {sources[1].sourceTransform.name} = {sources[1].weight}");
     }
 }
