@@ -81,6 +81,9 @@ def vector2vector3d(docVec:pd.DataFrame):
     def standardization(x:pd.Series)->pd.Series:
         """分布の標準化"""
         return (x - x.mean()) / x.std()
+    def normalization(x:pd.Series)->pd.Series:
+        """分布の範囲を[-1, 1]"""
+        return (x - x.mean()) / (x.max() - x.min())
 
     docVecStd = docVec.copy()
     docVecStd.apply(standardization)
@@ -92,7 +95,7 @@ def vector2vector3d(docVec:pd.DataFrame):
     feature = pca.transform(docVecStd)
     pc_df = pd.DataFrame(feature, columns=[f"PC{x+1}" for x in range(len(docVecStd.columns))], index=docVec.index)
 
-    pc_df = pc_df.apply(standardization)
+    pc_df = pc_df.apply(normalization)
 
     return pc_df
 
