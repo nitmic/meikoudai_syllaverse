@@ -19,7 +19,7 @@
                     "type": "Value",
                     "id": "9850271f-24f4-4cc7-9ccb-461fe3f74778",
                     "expectedControlType": "Axis",
-                    "processors": "",
+                    "processors": "Clamp(min=-2,max=2)",
                     "interactions": "",
                     "initialStateCheck": true
                 },
@@ -460,7 +460,7 @@
                     "id": "6508636b-c660-429a-973b-8dc8de4d6510",
                     "path": "PinchComposite",
                     "interactions": "",
-                    "processors": "",
+                    "processors": "Scale(factor=0.2)",
                     "groups": "",
                     "action": "Move Pinch",
                     "isComposite": true,
@@ -487,6 +487,17 @@
                     "action": "Move Pinch",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "8006b993-a812-41f5-b1fb-0fecf123c2f4",
+                    "path": "<Mouse>/scroll/y",
+                    "interactions": "",
+                    "processors": "Scale(factor=0.08)",
+                    "groups": "",
+                    "action": "Move Pinch",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -1072,7 +1083,7 @@
                     "type": "Value",
                     "id": "260bf502-2a29-40f2-a2a8-c2f4ddcfea17",
                     "expectedControlType": "Axis",
-                    "processors": "Clamp(min=-10,max=10)",
+                    "processors": "Clamp(min=-5,max=5)",
                     "interactions": "",
                     "initialStateCheck": true
                 },
@@ -1178,7 +1189,7 @@
                     "id": "5440d633-a9d8-40fe-82bc-bb4f51452b9a",
                     "path": "PinchComposite",
                     "interactions": "",
-                    "processors": "Invert",
+                    "processors": "Invert,Scale(factor=0.25)",
                     "groups": "",
                     "action": "Zoom",
                     "isComposite": true,

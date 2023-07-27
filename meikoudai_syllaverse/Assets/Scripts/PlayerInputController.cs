@@ -65,7 +65,7 @@ public class PlayerInputController : MonoBehaviour
 
         input.actions["Move"].performed += _OnMove;
         input.actions["Move"].canceled += Stop;
-        input.actions["Move Pinch"].performed += _OnMove;
+        input.actions["Move Pinch"].performed += _OnMovePinch;
         input.actions["Lift"].performed += _OnLift;
         input.actions["Lift"].canceled += _StopLift;
         input.actions["Look"].performed += _OnLook;
