@@ -4,7 +4,7 @@ using UnityEngine;
 using Suggest;
 using Cysharp.Threading.Tasks;
 
-public class Test : MonoBehaviour
+public class NodeGenerator : MonoBehaviour
 {
     public GameObject prefab;
     public Vector3 worldSize = new Vector3(500, 500, 500);
