@@ -6,13 +6,13 @@ Shader "Custom/FogSurface"
     }
     SubShader
     {
-        Tags { "RenderType"="Transparent" }
+        Tags { "Queue"="Transparent" "RenderType"="Transparent" }
         LOD 100
         Blend SrcAlpha OneMinusSrcAlpha
 
         Pass
         {
-            Cull Front
+            // Cull Front
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
