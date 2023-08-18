@@ -61,5 +61,6 @@
         "Rigidbody",
         "Syllaverse",
         "UGUI"
-    ]
+    ],
+    "dotnet.defaultSolution": "meikoudai_syllaverse/meikoudai_syllaverse.sln"
 }
