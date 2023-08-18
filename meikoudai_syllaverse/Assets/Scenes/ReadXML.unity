@@ -1620,10 +1620,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxDistance: 500
-  alphaStep: 0.5
+  alphaStep: 0.25
   FogObject: {fileID: 4712986817336027857, guid: 0954fc13ba22d9c49affebf97df08d65, type: 3}
   fogType: 2
-  density: 0.0045
+  density: 0.00349
   reset: 0
 --- !u!1 &1930071515
 GameObject:
