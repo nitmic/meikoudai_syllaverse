@@ -10,7 +10,7 @@ jobs:
         # チェックアウト
       - uses: actions/checkout@v3
         with:
-          repository: nitmic-git/meikoudai_syllaverse
+          repository: nitmic/meikoudai_syllaverse
 
         # Python環境の構築
       - name: setup python
